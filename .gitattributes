@@ -5,4 +5,4 @@
 *.md text eol=lf
 *.tar.gz binary
 # Preserve captured logs, package snapshots and native output verbatim.
-SphericalHarmonic/results/** -whitespace
+SphericalHarmonics/results/** -whitespace

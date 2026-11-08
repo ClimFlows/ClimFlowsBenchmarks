@@ -1,6 +1,0 @@
-Precompiling CUDA_Runtime_jll...
-   1296.6 ms  ✓ CUDA_Runtime_jll
-  1 dependency successfully precompiled in 1 seconds. 27 already precompiled.
-  No Changes to `~/Documents/ChatGPT/ClimFlows/sht-gpu-benchmarks/environments/shtns/Project.toml`
-  No Changes to `~/Documents/ChatGPT/ClimFlows/sht-gpu-benchmarks/environments/shtns/Manifest.toml`
-Dict{String, Any}("local" => "true", "version" => "13.1")

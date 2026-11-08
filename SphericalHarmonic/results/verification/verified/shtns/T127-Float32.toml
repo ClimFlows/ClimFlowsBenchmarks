@@ -1,6 +1,0 @@
-backend = "shtns"
-batch = 64
-lmax = 127
-precision = "Float32"
-reason = "Pinned SHTns.jl CUDA API uses Float64"
-status = "unsupported"

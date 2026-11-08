@@ -1,8 +1,0 @@
-bin
-lib
-lib/libcublas.so
-lib/libcublas.so.12
-lib/libcublas.so.12.9.1.4
-lib/libcublasLt.so
-lib/libcublasLt.so.12
-lib/libcublasLt.so.12.9.1.4
