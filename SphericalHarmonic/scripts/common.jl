@@ -75,7 +75,7 @@ function options(args)
         pair = split(a[3:end], '='; limit=2)
         o[pair[1]] = length(pair) == 2 ? pair[2] : "true"
     end
-    allowed = Set(["backend", "out", "lmax", "precision", "samples", "warmup", "batch", "validate-only", "mode", "seconds-total", "min-samples"])
+    allowed = Set(["backend", "out", "lmax", "precision", "warmup", "batch", "validate-only", "seconds-total", "min-samples"])
     isempty(setdiff(keys(o), allowed)) || error("Unknown options: $(setdiff(keys(o), allowed))")
     return o
 end

@@ -8,11 +8,12 @@ destination=${SHT_BENCH_REPRO_DIR:-$root/build/reproduction-jll-$(date -u +%Y%m%
 mkdir -p "$destination"
 destination=$(cd -- "$destination" && pwd)
 work=$destination/workspace
-mkdir -p "$work/sources" "$work/environments/shtns-jll-cuda12.9"
-cp -R "$root/scripts" "$root/adapters" "$work/"
+mkdir -p "$work/sources" "$work/environments/shtns-jll" "$work/scripts" "$work/adapters"
+cp "$root/scripts/"*.sh "$root/scripts/"*.jl "$root/scripts/"*.py "$work/scripts/"
+cp "$root/adapters/"*.jl "$work/adapters/"
 cp "$root/config.toml" "$work/"
 cp "$root/sources/"*.tar.gz "$root/sources/SHA256SUMS" "$root/sources/revisions.toml" "$work/sources/"
-cp "$root/environments/shtns-jll-cuda12.9/"*.toml "$work/environments/shtns-jll-cuda12.9/"
+cp "$root/environments/shtns-jll/"*.toml "$work/environments/shtns-jll/"
 export JULIA_DEPOT_PATH=$destination/depot
 export JULIA_LOAD_PATH='@:@stdlib'
 export JULIA_NUM_THREADS=1
@@ -24,8 +25,8 @@ export JULIA=$julia_bin
 printf '%s\n' "JULIA_DEPOT_PATH=$JULIA_DEPOT_PATH" "JULIA_LOAD_PATH=$JULIA_LOAD_PATH" "JULIA_PKG_SERVER=$JULIA_PKG_SERVER" > "$destination/environment.txt"
 echo "Isolated reproduction directory: $destination"
 # Preserve the fresh scripts, sources, manifests and logs even if setup fails.
-bash "$work/scripts/setup.sh" shtns-jll-cuda12.9 > "$destination/setup.log" 2>&1
+bash "$work/scripts/setup.sh" shtns-jll > "$destination/setup.log" 2>&1
 echo "Installation complete; starting GPU validation and measurements."
-bash "$work/scripts/run.sh" shtns-jll-cuda12.9 --seconds-total=60 --out="$destination/results" "$@" > "$destination/run.log" 2>&1
-python3 "$work/scripts/report_shtns_jll.py" "$destination/results"
+bash "$work/scripts/run.sh" shtns-jll --seconds-total=60 --out="$destination/results" "$@" > "$destination/run.log" 2>&1
+python3 "$work/scripts/report.py" "$destination/results"
 echo "Completed: $destination/results/summary.md"

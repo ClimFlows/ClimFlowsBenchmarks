@@ -12,11 +12,11 @@ for name in shtns-julia shtnskit speedy shtns-c; do
 done
 export JULIA_PKG_PRECOMPILE_AUTO=0
 for backend in "$@"; do
-    case "$backend" in shtns|shtns-jll|shtns-jll-cuda12.9|shtnskit|speedy) ;; *) echo "Unknown backend: $backend" >&2; exit 2;; esac
+    case "$backend" in shtns|shtns-jll|shtnskit|speedy) ;; *) echo "Unknown backend: $backend" >&2; exit 2;; esac
 done
 backends=("$@")
-if [[ ${#backends[@]} == 0 ]]; then backends=(shtns shtnskit speedy); fi
+if [[ ${#backends[@]} == 0 ]]; then backends=(shtns-jll shtnskit speedy); fi
 for backend in "${backends[@]}"; do
     cd "$root/environments/$backend"
-    "$julia_bin" --startup-file=no --project=. "$root/scripts/instantiate.jl" "$backend"
+    "$julia_bin" --startup-file=no --project=. "$root/scripts/instantiate.jl"
 done

@@ -7,7 +7,7 @@ if [[ $# -gt 0 ]]; then shift; fi
 run_one() {
     local name=$1
     shift
-    if [[ "$name" == shtns-jll || "$name" == shtns-jll-cuda12.9 ]]; then
+    if [[ "$name" == shtns-jll ]]; then
         env -u SHTNS_PATH SHTNS_BINARY=jll "$julia_bin" --startup-file=no --project="$root/environments/$name" "$root/scripts/benchmark.jl" --backend=shtns "$@"
         return
     fi
@@ -24,7 +24,7 @@ run_one() {
 }
 if [[ "$backend" == all ]]; then
     failed=0
-    for name in shtns shtnskit speedy; do
+    for name in shtns-jll shtnskit speedy; do
         run_one "$name" "$@" || failed=1
     done
     exit "$failed"

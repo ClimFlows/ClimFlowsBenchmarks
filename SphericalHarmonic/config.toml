@@ -1,7 +1,6 @@
 batch = 64
 precisions = ["Float32", "Float64"]
 warmup = 3
-samples = 20 # legacy allocating mode only
 gpu_seconds_total = 60.0
 min_samples = 10
 seed = 20261107

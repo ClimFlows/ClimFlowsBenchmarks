@@ -1,4 +1,0 @@
-speedy T21 Float32 batch=64
-  validated errors=Dict("velocity_phi_relative_l2" => 2.4516327750172835e-7, "vorticity_relative_l2" => 4.962273459900637e-7, "velocity_theta_relative_l2" => 2.3262883151175542e-7, "divergence_relative_l2" => 4.470079620798379e-7)
-speedy T21 Float64 batch=64
-  validated errors=Dict("velocity_phi_relative_l2" => 3.6059354358545206e-15, "vorticity_relative_l2" => 1.7951780922565006e-14, "velocity_theta_relative_l2" => 3.5598253951198044e-15, "divergence_relative_l2" => 1.7868461000860597e-14)

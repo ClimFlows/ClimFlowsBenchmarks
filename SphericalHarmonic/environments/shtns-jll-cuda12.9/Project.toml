@@ -1,9 +1,0 @@
-[deps]
-CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
-CUDA_Runtime_jll = "76a88914-d11a-5bdc-97e0-2f5a05c973a2"
-FFTW_jll = "f5851436-0d7a-5f13-b9de-f02708fd171a"
-SHTns = "5dc4ea12-f621-4038-8458-a22eae100703"
-
-[compat]
-CUDA = "5"
-julia = "1.11"

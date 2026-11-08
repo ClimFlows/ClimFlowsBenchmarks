@@ -1,23 +1,6 @@
 include("common.jl")
 using CUDA, Pkg
 
-function measure_allocating(f, warmup, samples)
-    for _ in 1:warmup
-        f(); CUDA.device_synchronize()
-    end
-    times = Float64[]
-    for _ in 1:samples
-        GC.gc(); CUDA.device_synchronize()
-        t = time_ns()
-        output = f()
-        CUDA.device_synchronize()
-        push!(times, (time_ns()-t)/1e9)
-        output = nothing
-    end
-    return Dict("seconds"=>times, "minimum_seconds"=>minimum(times),
-        "median_seconds"=>median(times), "p95_seconds"=>quantile(times,0.95))
-end
-
 function measure_preallocated(f, warmup, budget, min_samples)
     for _ in 1:max(warmup,3)
         f(); CUDA.device_synchronize()
@@ -118,7 +101,7 @@ function run_case(case, B, T, config, opts)
         "tolerance"=>tolerance, "notes"=>c.notes,
         "memory_free_before_bytes"=>free_before,
         "memory_free_after_validation_bytes"=>Int(CUDA.free_memory()),
-        "analytic_modes"=>[collect(m) for m in c.ref.modes], "mode"=>get(opts,"mode","inplace"))
+        "analytic_modes"=>[collect(m) for m in c.ref.modes], "mode"=>"inplace")
     valid || return result  # Never publish timings for an invalid transform.
     if !haskey(opts,"validate-only")
         recovered = nothing; de = nothing; ze = nothing
@@ -127,14 +110,10 @@ function run_case(case, B, T, config, opts)
                          ("synthesis",()->c.synthesis(dz)),
                          ("roundtrip",()->c.synthesis(c.analysis(c.input))))
             warmup = parse(Int,get(opts,"warmup",string(config["warmup"])))
-            if get(opts,"mode","inplace") == "inplace"
-                target = max(0.0,GPU_BUDGET[]/max(1,OPS_LEFT[]))
-                stats = measure_preallocated(f,warmup,target,parse(Int,get(opts,"min-samples",string(get(config,"min_samples",10)))))
-                GPU_BUDGET[] -= stats["gpu_measured_seconds"]
-                OPS_LEFT[] -= 1
-            else
-                stats = measure_allocating(f,warmup,parse(Int,get(opts,"samples",string(config["samples"]))))
-            end
+            target = max(0.0,GPU_BUDGET[]/max(1,OPS_LEFT[]))
+            stats = measure_preallocated(f,warmup,target,parse(Int,get(opts,"min-samples",string(config["min_samples"]))))
+            GPU_BUDGET[] -= stats["gpu_measured_seconds"]
+            OPS_LEFT[] -= 1
             stats["vector_fields_per_second"] = B/stats["median_seconds"]
             result[name] = stats
         end
@@ -155,7 +134,6 @@ function main()
     backend in ("shtns","shtnskit","speedy") || error("Specify --backend=shtns|shtnskit|speedy")
     config=TOML.parsefile(joinpath(ROOT,"config.toml"))
     B=parse(Int,get(opts,"batch",string(config["batch"]))); B>0 || error("batch must be positive")
-    parse(Int,get(opts,"samples",string(config["samples"])))>0 || error("samples must be positive")
     out=haskey(opts,"out") ? joinpath(abspath(opts["out"]),backend) :
         joinpath(ROOT,"results",Dates.format(now(),"yyyymmdd-HHMMSS")*"-"*backend)
     mkpath(out)
@@ -165,7 +143,7 @@ function main()
     preferences=joinpath(dirname(manifest),"LocalPreferences.toml")
     isfile(preferences) && cp(preferences,joinpath(out,"LocalPreferences.toml");force=true)
     cp(joinpath(ROOT,"sources","revisions.toml"),joinpath(out,"sources.toml"); force=true)
-    for file in ("scripts/common.jl","scripts/benchmark.jl","adapters/$backend.jl")
+    for file in ("scripts/common.jl","scripts/benchmark.jl")
         cp(joinpath(ROOT,file),joinpath(out,basename(file));force=true)
     end
     open(joinpath(out,"nvidia-smi.txt"),"w") do io
@@ -181,14 +159,12 @@ function main()
         "compute_capability"=>string(CUDA.capability(CUDA.device())),
         "total_memory_bytes"=>Int(CUDA.total_memory()), "julia_threads"=>Threads.nthreads(),
         "manifest_sha256"=>bytes2hex(sha256(read(manifest))), "arguments"=>ARGS,
-        "measurement"=>get(opts,"mode","inplace")=="inplace" ? "Preallocated pipelines, warmed CUDA graphs where supported, CUDA event timings with reusable events; host allocations reported separately" : "Synchronized wall time, allocating public pipelines")
+        "measurement"=>"Preallocated pipelines, CUDA event timings; direct or CUDA graph replay; host allocations reported separately")
     write_toml(joinpath(out,"metadata.toml"),metadata)
     open(joinpath(out,"packages.txt"),"w") do io; Pkg.status(;io, mode=Pkg.PKGMODE_MANIFEST); end
     CUDA.functional() || error("CUDA is not functional; see cuda-versioninfo.txt")
     CUDA.allowscalar(false)
-    mode=get(opts,"mode","inplace")
-    mode in ("inplace","allocating") || error("Unknown mode $mode")
-    adapter=mode=="inplace" ? joinpath(ROOT,"adapters","inplace",backend*".jl") : joinpath(ROOT,"adapters",backend*".jl")
+    adapter=joinpath(ROOT,"adapters",backend*".jl")
     cp(adapter,joinpath(out,backend*".jl");force=true)
     include(adapter)
     if backend=="shtns"
@@ -207,10 +183,8 @@ function main()
     isempty(cases) && error("No requested lmax exists in config.toml")
     precisions=split(get(opts,"precision",join(config["precisions"],',')),',')
     all(p->p in ("Float32","Float64"),precisions) || error("precision must be Float32 or Float64")
-    if mode=="inplace"
-        sort!(cases;by=c->c["lmax"],rev=true)
-        sort!(precisions;rev=true)
-    end
+    sort!(cases;by=c->c["lmax"],rev=true)
+    sort!(precisions;rev=true)
     supported=length(cases)*count(p->!(backend=="shtns" && p=="Float32"),precisions)
     OPS_LEFT[]=3supported
     full_combinations=length(config["cases"])*(3length(config["precisions"])-count(==("Float32"),config["precisions"]))

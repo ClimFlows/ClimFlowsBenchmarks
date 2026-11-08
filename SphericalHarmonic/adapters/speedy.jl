@@ -20,33 +20,46 @@ function make_case(L, nlat, nlon, B, T, seed)
     coslat = CuArray(reshape(repeat(T.(sin.(theta)); inner=nlon), :, 1))
     # Spectrum indices are one-based; discard the workspace degree in delta/zeta.
     keep = CuArray(reshape(T.(Array(spectrum.l_indices) .<= L+1), :, 1))
+    a, b = field(), field()
+    us, vs = spectral(), spectral()
+    d, z = spectral(), spectral()
+    outu, outv = field(), field()
+    # Compose upstream fused FFT loops directly so the complete pipeline can
+    # be captured once, without trying to capture nested graph launches.
+    cache = SpeedyTransforms.get_cache(CUDA.CuGraphExec, trans, B)
+    scratch = trans.scratch_memory
+    function to_spectral!(coeffs, f)
+        SpeedyTransforms.forward_loop!(cache,scratch.north,scratch.south,f,trans)
+        SpeedyTransforms._legendre!(coeffs,scratch.north,scratch.south,scratch.column,trans)
+        return coeffs
+    end
+    function to_grid!(f, coeffs)
+        SpeedyTransforms._legendre!(scratch.north,scratch.south,coeffs,scratch.column,trans; unscale_coslat=false)
+        SpeedyTransforms.inverse_loop!(cache,f,scratch.north,scratch.south,trans)
+        return f
+    end
     function analysis(uv)
-        a, b = field(), field()
         a.data .= uv[1].data ./ coslat
         b.data .= uv[2].data ./ coslat
-        us, vs = spectral(), spectral()
-        transform!(us, a, trans); transform!(vs, b, trans)
-        d, z = spectral(), spectral()
+        to_spectral!(us, a); to_spectral!(vs, b)
         divergence!(d, us, vs, trans; radius=1)
         curl!(z, us, vs, trans; radius=1)
         d.data .*= keep; z.data .*= keep
         return (d,z)
     end
     function synthesis(dz)
-        us, vs = spectral(), spectral()
         UV_from_vordiv!(us, vs, dz[2], dz[1], trans; radius=1)
-        a, b = field(), field()
-        transform!(a, us, trans); transform!(b, vs, trans)
-        a.data ./= coslat; b.data ./= coslat
-        return (a,b)
+        to_grid!(outu, us); to_grid!(outv, vs)
+        outu.data ./= coslat; outv.data ./= coslat
+        return (outu,outv)
     end
     function scalar(c)
-        a = field(); transform!(a, c, trans); return a
+        scalarfield = field(); transform!(scalarfield, c, trans); return scalarfield
     end
     unpack(x) = permutedims(reshape(Array(x.data), nlon, nlat, B), (2,1,3))
     # Native vector order is (east,north); common reference is (south,east).
     unpack_vector(uv) = (-unpack(uv[2]), unpack(uv[1]))
     return (; input=(u,v), analysis, synthesis, scalar, unpack, unpack_vector, ref,
         nlat_actual=nlat,
-        notes="Allocating divergence/vorticity pipeline with reused SpectralTransform; metric scaling included; CUDA graphs enabled; one extra workspace degree")
+        notes="Preallocated pipeline composed of native fused FFT loops, Legendre kernels and vector operators; full-pipeline graph capture replaces nested Fourier graphs; one extra workspace degree")
 end
