@@ -1,0 +1,85 @@
+analytic_modes = [[1, 0], [2, 1], [3, 2], [63, 42], [126, 1], [127, 127]]
+backend = "shtnskit"
+batch = 64
+lmax = 127
+memory_free_after_validation_bytes = 7106199552
+memory_free_before_bytes = 7508852736
+mode = "inplace"
+nlat = 192
+nlat_storage = 192
+nlon = 384
+notes = "Adapted preallocated batch pipeline: unchanged upstream SHTnsKit batch kernels, reused complex FFT plans, no per-call arrays; not a public upstream in-place batch API"
+post_measurement_velocity_error = 1.3615916014352434e-14
+precision = "Float64"
+setup_and_fixture_seconds = 0.346192333
+status = "ok"
+tolerance = 5.0e-10
+
+[analysis]
+direct_gpu_allocated_bytes_per_call = 0
+direct_host_allocated_bytes_per_call = 105552
+execution_path = "CUDA graph replay"
+executions = 10
+gpu_allocated_bytes_per_call = 0
+gpu_measured_seconds = 0.4294644445180893
+graph_capture_error = ""
+graph_output_relative_error = 0.0
+host_allocated_bytes_per_call = 0
+median_seconds = 0.04311057738959789
+minimum_seconds = 0.041177887469530106
+p95_seconds = 0.04328831769526005
+repeats_per_sample = 1
+samples = 10
+seconds = [0.041177887469530106, 0.0432930551469326, 0.04297808185219765, 0.04308822378516197, 0.043196093291044235, 0.04305430129170418, 0.043098241090774536, 0.04312291368842125, 0.04317311942577362, 0.04328252747654915]
+target_gpu_seconds = 0.2686626020198067
+vector_fields_per_second = 1484.554461463615
+wall_median_seconds = 0.0432794455
+wall_seconds = [0.041300777, 0.043475725, 0.043132344, 0.0432208, 0.043326934, 0.043166653, 0.043262597, 0.043296294, 0.043332903, 0.043419839]
+
+[errors]
+divergence_relative_l2 = 2.0136810964823133e-13
+velocity_phi_relative_l2 = 1.3615916014352434e-14
+velocity_theta_relative_l2 = 1.3351365132859597e-14
+vorticity_relative_l2 = 2.0302445554593202e-13
+
+[roundtrip]
+direct_gpu_allocated_bytes_per_call = 0
+direct_host_allocated_bytes_per_call = 213600
+execution_path = "CUDA graph replay"
+executions = 10
+gpu_allocated_bytes_per_call = 0
+gpu_measured_seconds = 0.7587543427944183
+graph_capture_error = ""
+graph_output_relative_error = 0.0
+host_allocated_bytes_per_call = 0
+median_seconds = 0.07444390282034874
+minimum_seconds = 0.0730937272310257
+p95_seconds = 0.08316838927567004
+repeats_per_sample = 1
+samples = 10
+seconds = [0.0730937272310257, 0.07428175956010818, 0.07446454465389252, 0.07422672212123871, 0.07449491322040558, 0.07449852675199509, 0.07442326098680496, 0.0743909478187561, 0.07515577971935272, 0.08972416073083878]
+target_gpu_seconds = 0.2597895207052881
+vector_fields_per_second = 859.7077473819122
+wall_median_seconds = 0.07456610150000001
+wall_seconds = [0.073186502, 0.074457829, 0.07453164, 0.074306373, 0.074585818, 0.074600853, 0.074602775, 0.074546385, 0.075327423, 0.089896841]
+
+[synthesis]
+direct_gpu_allocated_bytes_per_call = 0
+direct_host_allocated_bytes_per_call = 108048
+execution_path = "CUDA graph replay"
+executions = 10
+gpu_allocated_bytes_per_call = 0
+gpu_measured_seconds = 0.3030685484409332
+graph_capture_error = ""
+graph_output_relative_error = 0.0
+host_allocated_bytes_per_call = 0
+median_seconds = 0.030152560211718082
+minimum_seconds = 0.030123040080070496
+p95_seconds = 0.03088060319423675
+repeats_per_sample = 1
+samples = 10
+seconds = [0.030767839401960373, 0.030972864478826523, 0.03014979138970375, 0.030155329033732414, 0.030123040080070496, 0.03014140948653221, 0.030143393203616142, 0.030134720727801323, 0.030205728486180305, 0.03027443215250969]
+target_gpu_seconds = 0.26167121756335965
+vector_fields_per_second = 2122.539497496067
+wall_median_seconds = 0.030261787999999998
+wall_seconds = [0.030909243, 0.031096002, 0.030201734, 0.030207226, 0.030253597, 0.03027782, 0.030235424, 0.030261176, 0.0302624, 0.030354677]

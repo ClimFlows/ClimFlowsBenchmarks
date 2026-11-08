@@ -1,0 +1,78 @@
+shtnskit T21 Float32 batch=64
+  validated errors=Dict("velocity_phi_relative_l2" => 1.4072680223622037e-7, "vorticity_relative_l2" => 3.8130378433343534e-7, "velocity_theta_relative_l2" => 1.3351437880649483e-7, "divergence_relative_l2" => 3.81918992800453e-7)
+shtnskit T21 Float64 batch=64
+Precompiling CUDA...
+    382.7 ms  ✓ LLVMLoopInfo
+    445.6 ms  ✓ Serialization
+    347.1 ms  ✓ LaTeXStrings
+    348.6 ms  ✓ Zlib_jll
+    384.3 ms  ✓ Adapt
+   1226.9 ms  ✓ UnsafeAtomics
+    545.1 ms  ✓ BFloat16s
+    396.7 ms  ✓ SuiteSparse_jll
+    869.1 ms  ✓ InteractiveUtils
+    827.3 ms  ✓ RandomNumbers
+   5193.7 ms  ✓ StyledStrings
+    395.7 ms  ✓ Requires
+    828.5 ms  ✓ CUDA_Runtime_Discovery
+    375.9 ms  ✓ Scratch
+    355.4 ms  ✓ ScopedValues
+    358.2 ms  ✓ PrecompileTools
+    426.4 ms  ✓ NVTX_jll
+    451.0 ms  ✓ LibTracyClient_jll
+   1202.9 ms  ✓ CUDA_Driver_jll
+    444.4 ms  ✓ demumble_jll
+    427.7 ms  ✓ JuliaNVTXCallbacks_jll
+    745.7 ms  ✓ LazyArtifacts
+    394.0 ms  ✓ GPUArraysCore
+    463.3 ms  ✓ Atomix
+    704.6 ms  ✓ Random123
+   2105.6 ms  ✓ SparseArrays
+   3933.0 ms  ✓ StaticArrays
+   2480.2 ms  ✓ StringManipulation
+    798.0 ms  ✓ Tracy
+    665.6 ms  ✓ NVTX
+    988.8 ms  ✓ LLVMExtra_jll
+   2934.0 ms  ✓ CUDA_Runtime_jll
+    598.6 ms  ✓ Statistics → SparseArraysExt
+           ✗ Adapt → AdaptSparseArraysExt
+    468.9 ms  ✓ StaticArrays → StaticArraysStatisticsExt
+    506.5 ms  ✓ Adapt → AdaptStaticArraysExt
+   7233.1 ms  ✓ LLVM
+   1558.6 ms  ✓ CUDA_Compiler_jll
+   3914.4 ms  ✓ KernelAbstractions
+   1748.1 ms  ✓ GPUToolbox
+   1663.1 ms  ✓ LLVM → BFloat16sExt
+  33206.3 ms  ✓ REPL
+   1650.6 ms  ✓ UnsafeAtomics → UnsafeAtomicsLLVM
+    695.7 ms  ✓ KernelAbstractions → SparseArraysExt
+    584.4 ms  ✓ KernelAbstractions → LinearAlgebraExt
+   6488.3 ms  ✓ Pkg → REPLExt
+  17804.6 ms  ✓ GPUCompiler
+   2870.0 ms  ? GPUArrays
+  18709.1 ms  ✓ PrettyTables
+  43244.2 ms  ✓ CUDA
+   4434.3 ms  ✓ Atomix → AtomixCUDAExt
+  49 dependencies successfully precompiled in 118 seconds. 39 already precompiled.
+  1 dependencies failed but may be precompilable after restarting julia
+  1 dependency had output during precompilation:
+┌ GPUArrays
+│  ┌ Warning: The call to compilecache failed to create a usable precompiled cache file for KernelAbstractions [63c18a36-062a-441e-b654-da1e3ab1ce7c]
+│  │   exception = Required dependency Base.PkgId(Base.UUID("de0858da-6303-5e67-8744-51eddeeeb8d7"), "Printf") failed to load from a cache file.
+│  └ @ Base loading.jl:2596
+└  
+Precompiling SHTnsKit...
+    916.4 ms  ✓ IntelOpenMP_jll
+    958.1 ms  ✓ oneTBB_jll
+   1911.0 ms  ✓ MKL_jll
+   5818.0 ms  ✓ FFTW
+   2092.5 ms  ✓ SHTnsKit
+  5 dependencies successfully precompiled in 11 seconds. 29 already precompiled.
+  1 dependency had output during precompilation:
+┌ MKL_jll
+│  Downloading artifact: oneTBB
+└  
+Precompiling SHTnsKitGPUExt...
+   4797.2 ms  ✓ SHTnsKit → SHTnsKitGPUExt
+  1 dependency successfully precompiled in 5 seconds. 96 already precompiled.
+  validated errors=Dict("velocity_phi_relative_l2" => 2.315431614558846e-15, "vorticity_relative_l2" => 9.254317250374448e-15, "velocity_theta_relative_l2" => 2.268710515472788e-15, "divergence_relative_l2" => 9.322853161020804e-15)

@@ -1,0 +1,85 @@
+analytic_modes = [[1, 0], [2, 1], [3, 2], [127, 85], [254, 1], [255, 255]]
+backend = "speedy"
+batch = 64
+lmax = 255
+memory_free_after_validation_bytes = 5977931776
+memory_free_before_bytes = 7972323328
+mode = "inplace"
+nlat = 384
+nlat_storage = 384
+nlon = 768
+notes = "Preallocated pipeline composed of native fused FFT loops, Legendre kernels and vector operators; full-pipeline graph capture replaces nested Fourier graphs; one extra workspace degree"
+post_measurement_velocity_error = 5.209973386327497e-14
+precision = "Float64"
+setup_and_fixture_seconds = 29.58093353
+status = "ok"
+tolerance = 5.0e-10
+
+[analysis]
+direct_gpu_allocated_bytes_per_call = 0
+direct_host_allocated_bytes_per_call = 115904
+execution_path = "CUDA graph replay"
+executions = 10
+gpu_allocated_bytes_per_call = 0
+gpu_measured_seconds = 1.2256483510136604
+graph_capture_error = ""
+graph_output_relative_error = 0.0
+host_allocated_bytes_per_call = 0
+median_seconds = 0.11223001778125763
+minimum_seconds = 0.11152864247560501
+p95_seconds = 0.15075721740722656
+repeats_per_sample = 1
+samples = 10
+seconds = [0.11223747581243515, 0.11163923144340515, 0.11152864247560501, 0.11222255975008011, 0.11220047622919083, 0.11213238537311554, 0.13201096653938293, 0.15365462005138397, 0.14721594750881195, 0.12080604583024979]
+target_gpu_seconds = 0.8
+vector_fields_per_second = 570.2574165562324
+wall_median_seconds = 0.1124246445
+wall_seconds = [0.112438476, 0.111820037, 0.111726033, 0.112405219, 0.112410813, 0.112232267, 0.132134366, 0.153754214, 0.147316103, 0.121006765]
+
+[errors]
+divergence_relative_l2 = 2.5828844400128864e-12
+velocity_phi_relative_l2 = 5.209973386327497e-14
+velocity_theta_relative_l2 = 5.120450956849684e-14
+vorticity_relative_l2 = 2.5914626782821374e-12
+
+[roundtrip]
+direct_gpu_allocated_bytes_per_call = 0
+direct_host_allocated_bytes_per_call = 277632
+execution_path = "CUDA graph replay"
+executions = 10
+gpu_allocated_bytes_per_call = 0
+gpu_measured_seconds = 1.796223908662796
+graph_capture_error = ""
+graph_output_relative_error = 0.0
+host_allocated_bytes_per_call = 0
+median_seconds = 0.17081104218959808
+minimum_seconds = 0.1611786186695099
+p95_seconds = 0.21496292129158967
+repeats_per_sample = 1
+samples = 10
+seconds = [0.1611786186695099, 0.16381677985191345, 0.16359081864356995, 0.16340698301792145, 0.19634407758712769, 0.2301965206861496, 0.18016745150089264, 0.17105267941951752, 0.17056940495967865, 0.1959005743265152]
+target_gpu_seconds = 0.7838327634547438
+vector_fields_per_second = 374.6830367615275
+wall_median_seconds = 0.170947028
+wall_seconds = [0.16137082, 0.163961832, 0.163773467, 0.16358607, 0.196547975, 0.230396111, 0.180371587, 0.171212521, 0.170681535, 0.196012155]
+
+[synthesis]
+direct_gpu_allocated_bytes_per_call = 0
+direct_host_allocated_bytes_per_call = 161728
+execution_path = "CUDA graph replay"
+executions = 15
+gpu_allocated_bytes_per_call = 0
+gpu_measured_seconds = 0.8270342722535133
+graph_capture_error = ""
+graph_output_relative_error = 0.0
+host_allocated_bytes_per_call = 0
+median_seconds = 0.052669983357191086
+minimum_seconds = 0.04982243478298187
+p95_seconds = 0.06896769702434538
+repeats_per_sample = 1
+samples = 15
+seconds = [0.04982243478298187, 0.05138230696320534, 0.05354975908994675, 0.05264774337410927, 0.05198191851377487, 0.05387971177697182, 0.052864961326122284, 0.05193337798118591, 0.0536300465464592, 0.052441664040088654, 0.05248675122857094, 0.05368249490857124, 0.052669983357191086, 0.06437340378761292, 0.07968771457672119]
+target_gpu_seconds = 0.7853224706547014
+vector_fields_per_second = 1215.1133514885005
+wall_median_seconds = 0.052820328
+wall_seconds = [0.049972001, 0.051527863, 0.053704346, 0.052820328, 0.05215405, 0.054080588, 0.053062933, 0.052114383, 0.053776484, 0.052606194, 0.052645449, 0.053779423, 0.052773069, 0.064475852, 0.079747914]

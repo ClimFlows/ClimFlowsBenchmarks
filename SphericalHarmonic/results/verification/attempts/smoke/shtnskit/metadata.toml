@@ -1,0 +1,10 @@
+arguments = ["--backend=shtnskit", "--lmax=21", "--validate-only", "--out=sht-gpu-benchmarks/results/verification/smoke"]
+backend = "shtnskit"
+compute_capability = "12.0.0"
+gpu = "NVIDIA RTX PRO 1000 Blackwell Generation Laptop GPU"
+julia_threads = 1
+julia_version = "1.11.9"
+manifest_sha256 = "1f69298de6b25fe99e9a971002137adc96727653d262c115d8d9772bc1e8c51a"
+measurement = "Synchronized wall time, allocating public pipelines, plans reused; no host/device transfer in timed region"
+total_memory_bytes = 8082685952
+utc_started = "2026-11-07T16:18:40.322"

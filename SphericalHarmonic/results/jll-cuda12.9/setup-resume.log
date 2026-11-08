@@ -1,0 +1,11 @@
+Precompiling project...
+   1216.6 ms  ✓ CUDA_Compiler_jll
+   1182.9 ms  ✓ SHTns_jll
+┌ Warning: attempting to remove probably stale pidfile
+│   path = "/tmp/climflows-sht-bench-depot/compiled/v1.11/CUDA/oWw5k_VTl8Q.ji.pidfile"
+└ @ FileWatching.Pidfile ~/.julia/juliaup/julia-1.11.9+0.x64.linux.gnu/share/julia/stdlib/v1.11/FileWatching/src/pidfile.jl:249
+   1184.0 ms  ✓ SHTns
+  35570.3 ms  ✓ CUDA
+   3196.5 ms  ✓ SHTns → SHTnsCUDAExt
+   3494.2 ms  ✓ Atomix → AtomixCUDAExt
+  6 dependencies successfully precompiled in 41 seconds. 90 already precompiled.

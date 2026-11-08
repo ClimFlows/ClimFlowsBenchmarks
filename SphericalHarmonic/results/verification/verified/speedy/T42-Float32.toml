@@ -1,0 +1,41 @@
+analytic_modes = [[1, 0], [2, 1], [3, 2], [21, 14], [41, 1], [42, 42]]
+backend = "speedy"
+batch = 64
+lmax = 42
+memory_free_after_validation_bytes = 7901020160
+memory_free_before_bytes = 7909408768
+nlat = 64
+nlat_storage = 64
+nlon = 128
+notes = "Allocating divergence/vorticity pipeline with reused SpectralTransform; metric scaling included; CUDA graphs enabled; one extra workspace degree"
+precision = "Float32"
+setup_and_fixture_seconds = 0.257081267
+status = "ok"
+tolerance = 0.0005
+
+[analysis]
+median_seconds = 0.0019120835
+minimum_seconds = 0.001865647
+p95_seconds = 0.00195387635
+seconds = [0.001865647, 0.00195852]
+vector_fields_per_second = 33471.34160197502
+
+[errors]
+divergence_relative_l2 = 1.056727477904071e-6
+velocity_phi_relative_l2 = 3.296748417171875e-7
+velocity_theta_relative_l2 = 3.21497856547021e-7
+vorticity_relative_l2 = 1.068553601716428e-6
+
+[roundtrip]
+median_seconds = 0.003109729
+minimum_seconds = 0.003018958
+p95_seconds = 0.0031914228999999996
+seconds = [0.0032005, 0.003018958]
+vector_fields_per_second = 20580.571490313145
+
+[synthesis]
+median_seconds = 0.0025846205
+minimum_seconds = 0.002441248
+p95_seconds = 0.00271365575
+seconds = [0.002727993, 0.002441248]
+vector_fields_per_second = 24761.85575406525

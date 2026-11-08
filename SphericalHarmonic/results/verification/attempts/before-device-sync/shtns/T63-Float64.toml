@@ -1,0 +1,41 @@
+analytic_modes = [[1, 0], [2, 1], [3, 2], [31, 21], [62, 1], [63, 63]]
+backend = "shtns"
+batch = 64
+lmax = 63
+memory_free_after_validation_bytes = 7831814144
+memory_free_before_bytes = 7970226176
+nlat = 96
+nlat_storage = 96
+nlon = 192
+notes = "Public allocating vector batch API; analysis copies destructive inputs; includes potential/divergence-vorticity conversions"
+precision = "Float64"
+setup_and_fixture_seconds = 6.313110112
+status = "ok"
+tolerance = 5.0e-10
+
+[analysis]
+median_seconds = 0.0016228625
+minimum_seconds = 0.001583271
+p95_seconds = 0.00165849485
+seconds = [0.001583271, 0.001662454]
+vector_fields_per_second = 39436.48953623613
+
+[errors]
+divergence_relative_l2 = 6.93676191309496e-14
+velocity_phi_relative_l2 = 4.912175933585805e-15
+velocity_theta_relative_l2 = 4.9592356986469076e-15
+vorticity_relative_l2 = 6.90569448381112e-14
+
+[roundtrip]
+median_seconds = 0.0015761375
+minimum_seconds = 0.001560637
+p95_seconds = 0.0015900879500000001
+seconds = [0.001560637, 0.001591638]
+vector_fields_per_second = 40605.5943723184
+
+[synthesis]
+median_seconds = 0.001256589
+minimum_seconds = 0.000325808
+p95_seconds = 0.0020942919
+seconds = [0.000325808, 0.00218737]
+vector_fields_per_second = 50931.5297205371

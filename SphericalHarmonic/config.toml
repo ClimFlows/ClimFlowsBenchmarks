@@ -1,0 +1,28 @@
+batch = 64
+precisions = ["Float32", "Float64"]
+warmup = 3
+samples = 20 # legacy allocating mode only
+gpu_seconds_total = 60.0
+min_samples = 10
+seed = 20261107
+
+[[cases]]
+lmax = 21
+nlat = 32
+nlon = 64
+[[cases]]
+lmax = 42
+nlat = 64
+nlon = 128
+[[cases]]
+lmax = 63
+nlat = 96
+nlon = 192
+[[cases]]
+lmax = 127
+nlat = 192
+nlon = 384
+[[cases]]
+lmax = 255
+nlat = 384
+nlon = 768

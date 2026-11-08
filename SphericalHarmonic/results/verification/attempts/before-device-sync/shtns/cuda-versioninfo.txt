@@ -1,0 +1,33 @@
+CUDA toolchain: 
+- runtime 13.1, local installation
+- driver 590.48.1 for 13.1
+- compiler 13.1, local installation
+
+CUDA libraries: 
+- CUBLAS: 13.2.0
+- CURAND: 10.4.1
+- CUFFT: 12.1.0
+- CUSOLVER: 12.0.7
+- CUSPARSE: 12.7.2
+- CUPTI: 2025.4.0 (API 13.1.0)
+- NVML: 13.0.0+590.48.1
+
+Julia packages: 
+- CUDA: 5.11.3
+- GPUArrays: 11.5.16
+- GPUCompiler: 1.17.1
+- KernelAbstractions: 0.9.45
+- CUDA_Driver_jll: 13.5.0+0
+- CUDA_Runtime_jll: 0.21.0+1
+- CUDA_Runtime_Discovery: 2.1.1
+
+Toolchain:
+- Julia: 1.11.9
+- LLVM: 16.0.6
+
+Preferences:
+- CUDA_Runtime_jll.version: 13.1
+- CUDA_Runtime_jll.local: true
+
+1 device:
+  0: NVIDIA RTX PRO 1000 Blackwell Generation Laptop GPU (sm_120, 7.512 GiB / 7.960 GiB available)

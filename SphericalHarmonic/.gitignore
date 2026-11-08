@@ -1,0 +1,10 @@
+vendor/
+build/
+.depot/
+__pycache__/
+results/*/
+!results/verification/
+!results/inplace-minute/
+!results/jll-precompiled/
+!results/jll-cuda12.9/
+!results/jll-cuda12.8/

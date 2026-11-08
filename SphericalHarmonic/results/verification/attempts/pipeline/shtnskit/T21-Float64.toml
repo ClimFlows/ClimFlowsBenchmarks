@@ -1,0 +1,41 @@
+analytic_modes = [[1, 0], [2, 1], [3, 2], [10, 7], [20, 1], [21, 21]]
+backend = "shtnskit"
+batch = 64
+lmax = 21
+memory_free_after_validation_bytes = 2122186752
+memory_free_before_bytes = 2128478208
+nlat = 32
+nlat_storage = 32
+nlon = 64
+notes = "Public allocating vector batch API; includes potential/divergence-vorticity conversions; native internal synchronizations retained"
+precision = "Float64"
+setup_and_fixture_seconds = 0.423128428
+status = "ok"
+tolerance = 5.0e-10
+
+[analysis]
+median_seconds = 0.0024434145000000003
+minimum_seconds = 0.002377737
+p95_seconds = 0.0025025242499999998
+seconds = [0.002509092, 0.002377737]
+vector_fields_per_second = 26192.854302861833
+
+[errors]
+divergence_relative_l2 = 9.322853161020804e-15
+velocity_phi_relative_l2 = 2.315431614558846e-15
+velocity_theta_relative_l2 = 2.268710515472788e-15
+vorticity_relative_l2 = 9.254317250374448e-15
+
+[roundtrip]
+median_seconds = 0.0046217645
+minimum_seconds = 0.004611227
+p95_seconds = 0.004631248249999999
+seconds = [0.004611227, 0.004632302]
+vector_fields_per_second = 13847.525117300978
+
+[synthesis]
+median_seconds = 0.0022866659999999997
+minimum_seconds = 0.002264182
+p95_seconds = 0.0023069016
+seconds = [0.002264182, 0.00230915]
+vector_fields_per_second = 27988.346352287568

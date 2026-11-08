@@ -1,0 +1,46 @@
+ERROR: Data Error : jl_EB0Jm1gPsJ-download
+Precompiling CUDA_Runtime_jll...
+   1105.7 ms  ✓ CUDA_Runtime_jll
+  1 dependency successfully precompiled in 1 seconds. 27 already precompiled.
+ Downloading artifact: CUDA_Runtime
+     Failure artifact: CUDA_Runtime
+ Downloading artifact: CUDA_Runtime
+     Failure artifact: CUDA_Runtime
+ERROR: Data Error : jl_y9OPSrAvs9-download
+ Downloading artifact: CUDA_Runtime
+     Failure artifact: CUDA_Runtime
+ Downloading artifact: CUDA_Runtime
+     Failure artifact: CUDA_Runtime
+ERROR: Data Error : jl_pUXGhwz6zg-download
+ Downloading artifact: CUDA_Runtime
+     Failure artifact: CUDA_Runtime
+ Downloading artifact: CUDA_Runtime
+     Failure artifact: CUDA_Runtime
+ERROR: Data Error : jl_fexuXWJstg-download
+ Downloading artifact: CUDA_Runtime
+     Failure artifact: CUDA_Runtime
+ Downloading artifact: CUDA_Runtime
+     Failure artifact: CUDA_Runtime
+ERROR: Data Error : jl_Pc3Q9iJgpC-download
+ERROR: Unable to automatically download/install artifact 'CUDA_Runtime' from sources listed in '/tmp/climflows-sht-bench-depot/packages/CUDA_Runtime_jll/6DIWA/Artifacts.toml'.
+Sources attempted:
+- https://pkg.julialang.org/artifact/b842734cc2028a5166fdcefc7e5a24fb79ab3e79
+    Error: EOFError: read end of file
+- https://github.com/JuliaBinaryWrappers/CUDA_Runtime_jll.jl/releases/download/CUDA_Runtime-v0.21.0+1/CUDA_Runtime.v0.21.0.x86_64-linux-gnu-cuda+12.9.tar.gz
+    Error: RequestError: HTTP/2 504 while requesting https://github.com/JuliaBinaryWrappers/CUDA_Runtime_jll.jl/releases/download/CUDA_Runtime-v0.21.0+1/CUDA_Runtime.v0.21.0.x86_64-linux-gnu-cuda+12.9.tar.gz
+
+Stacktrace:
+ [1] error(s::String)
+   @ Base ./error.jl:35
+ [2] ensure_artifact_installed(name::String, meta::Dict{String, Any}, artifacts_toml::String; platform::Base.BinaryPlatforms.Platform, verbose::Bool, quiet_download::Bool, io::IOContext{IO})
+   @ Pkg.Artifacts ~/.julia/juliaup/julia-1.11.9+0.x64.linux.gnu/share/julia/stdlib/v1.11/Pkg/src/Artifacts.jl:499
+ [3] download_artifacts(env::Pkg.Types.EnvCache; platform::Base.BinaryPlatforms.Platform, julia_version::VersionNumber, verbose::Bool, io::IOContext{IO})
+   @ Pkg.Operations ~/.julia/juliaup/julia-1.11.9+0.x64.linux.gnu/share/julia/stdlib/v1.11/Pkg/src/Operations.jl:789
+ [4] instantiate(ctx::Pkg.Types.Context; manifest::Nothing, update_registry::Bool, verbose::Bool, platform::Base.BinaryPlatforms.Platform, allow_build::Bool, allow_autoprecomp::Bool, kwargs::@Kwargs{})
+   @ Pkg.API ~/.julia/juliaup/julia-1.11.9+0.x64.linux.gnu/share/julia/stdlib/v1.11/Pkg/src/API.jl:1272
+ [5] instantiate
+   @ ~/.julia/juliaup/julia-1.11.9+0.x64.linux.gnu/share/julia/stdlib/v1.11/Pkg/src/API.jl:1172 [inlined]
+ [6] instantiate(; kwargs::@Kwargs{})
+   @ Pkg.API ~/.julia/juliaup/julia-1.11.9+0.x64.linux.gnu/share/julia/stdlib/v1.11/Pkg/src/API.jl:1171
+ [7] top-level scope
+   @ none:1

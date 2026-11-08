@@ -1,0 +1,6 @@
+backend = "shtns"
+batch = 64
+error = """SHTns could not initialize the on-device CUDA configuration\nStacktrace:\n  [1] error(s::String)\n    @ Base ./error.jl:35\n  [2] make_case(L::Int64, nlat::Int64, nlon::Int64, B::Int64, T::Type, seed::Int64)\n    @ Main ~/Documents/ChatGPT/ClimFlows/sht-gpu-benchmarks/adapters/inplace/shtns.jl:27\n  [3] run_case(case::Dict{String, Any}, B::Int64, T::Type, config::Dict{String, Any}, opts::Dict{String, String})\n    @ Main ~/Documents/ChatGPT/ClimFlows/sht-gpu-benchmarks/scripts/benchmark.jl:97\n  [4] invokelatest(::Any, ::Any, ::Vararg{Any}; kwargs::@Kwargs{})\n    @ Base ./essentials.jl:1055\n  [5] invokelatest(::Any, ::Any, ::Vararg{Any})\n    @ Base ./essentials.jl:1052\n  [6] main()\n    @ Main ~/Documents/ChatGPT/ClimFlows/sht-gpu-benchmarks/scripts/benchmark.jl:226\n  [7] top-level scope\n    @ ~/Documents/ChatGPT/ClimFlows/sht-gpu-benchmarks/scripts/benchmark.jl:240\n  [8] include(mod::Module, _path::String)\n    @ Base ./Base.jl:562\n  [9] exec_options(opts::Base.JLOptions)\n    @ Base ./client.jl:316\n [10] _start()\n    @ Base ./client.jl:524"""
+lmax = 21
+precision = "Float64"
+status = "error"

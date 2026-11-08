@@ -1,0 +1,2 @@
+shtnskit T255 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 1.5885371389260008e-13, "vorticity_relative_l2" => 5.786743431119063e-12, "velocity_theta_relative_l2" => 1.55293363009838e-13, "divergence_relative_l2" => 5.706921904494372e-12)

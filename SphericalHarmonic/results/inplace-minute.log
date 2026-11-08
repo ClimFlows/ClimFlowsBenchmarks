@@ -1,0 +1,65 @@
+shtns T255 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 7.429013779261495e-14, "vorticity_relative_l2" => 4.002672456949866e-12, "velocity_theta_relative_l2" => 7.257533366439382e-14, "divergence_relative_l2" => 3.942050936036834e-12)
+shtns T127 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 1.7689346252367085e-14, "vorticity_relative_l2" => 3.8230703458625505e-13, "velocity_theta_relative_l2" => 1.7336231710819848e-14, "divergence_relative_l2" => 3.7673050797014394e-13)
+shtns T63 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 4.912175933585805e-15, "vorticity_relative_l2" => 6.90569448381112e-14, "velocity_theta_relative_l2" => 4.9592356986469076e-15, "divergence_relative_l2" => 6.93676191309496e-14)
+shtns T42 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 6.710330541139504e-15, "vorticity_relative_l2" => 6.4925085277493e-14, "velocity_theta_relative_l2" => 6.577582424712834e-15, "divergence_relative_l2" => 6.361066408905877e-14)
+shtns T21 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 1.83502413660665e-15, "vorticity_relative_l2" => 7.598517300213687e-15, "velocity_theta_relative_l2" => 1.8538827559524974e-15, "divergence_relative_l2" => 7.612318768542588e-15)
+  cuda GPU #0 "NVIDIA RTX PRO 1000 Blackwell Generation Laptop GPU" found (warp size = 32, compute capabilities = 12.0, CU=20, max_threads=30720, 7.53 GB, L2 cache=32MB).
+!!! Use theta-contiguous FFT on GPU !!!
+=> Using VkFFT v1.2.33
+  cuda GPU #0 "NVIDIA RTX PRO 1000 Blackwell Generation Laptop GPU" found (warp size = 32, compute capabilities = 12.0, CU=20, max_threads=30720, 7.53 GB, L2 cache=32MB).
+!!! Use theta-contiguous FFT on GPU !!!
+=> Using VkFFT v1.2.33
+  cuda GPU #0 "NVIDIA RTX PRO 1000 Blackwell Generation Laptop GPU" found (warp size = 32, compute capabilities = 12.0, CU=20, max_threads=30720, 7.53 GB, L2 cache=32MB).
+!!! Use theta-contiguous FFT on GPU !!!
+=> Using VkFFT v1.2.33
+  cuda GPU #0 "NVIDIA RTX PRO 1000 Blackwell Generation Laptop GPU" found (warp size = 32, compute capabilities = 12.0, CU=20, max_threads=30720, 7.53 GB, L2 cache=32MB).
+!!! Use theta-contiguous FFT on GPU !!!
+=> Using VkFFT v1.2.33
+  cuda GPU #0 "NVIDIA RTX PRO 1000 Blackwell Generation Laptop GPU" found (warp size = 32, compute capabilities = 12.0, CU=20, max_threads=30720, 7.53 GB, L2 cache=32MB).
+!!! Use theta-contiguous FFT on GPU !!!
+=> Using VkFFT v1.2.33
+shtnskit T255 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 1.5885045909049812e-13, "vorticity_relative_l2" => 5.786743431119063e-12, "velocity_theta_relative_l2" => 1.5529020022142245e-13, "divergence_relative_l2" => 5.706921904494372e-12)
+shtnskit T255 Float32 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 3.4178256586618767e-7, "vorticity_relative_l2" => 4.88027376364382e-6, "velocity_theta_relative_l2" => 3.355389021134527e-7, "divergence_relative_l2" => 4.876423294248965e-6)
+shtnskit T127 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 1.3615916014352434e-14, "vorticity_relative_l2" => 2.0302445554593202e-13, "velocity_theta_relative_l2" => 1.3351365132859597e-14, "divergence_relative_l2" => 2.0136810964823133e-13)
+shtnskit T127 Float32 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 2.848767318231981e-7, "vorticity_relative_l2" => 2.297971915701266e-6, "velocity_theta_relative_l2" => 2.838682301218475e-7, "divergence_relative_l2" => 2.3062690404377765e-6)
+shtnskit T63 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 1.740985355425993e-14, "vorticity_relative_l2" => 1.6743169569632972e-13, "velocity_theta_relative_l2" => 1.7046343412401423e-14, "divergence_relative_l2" => 1.6488017788226056e-13)
+shtnskit T63 Float32 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 2.0359888309274386e-7, "vorticity_relative_l2" => 1.1512007649791528e-6, "velocity_theta_relative_l2" => 2.0738125380119858e-7, "divergence_relative_l2" => 1.151510504950153e-6)
+shtnskit T42 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 1.4258984226320805e-14, "vorticity_relative_l2" => 9.225481885066369e-14, "velocity_theta_relative_l2" => 1.3956891289571777e-14, "divergence_relative_l2" => 9.10281207564117e-14)
+shtnskit T42 Float32 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 1.8213274155248242e-7, "vorticity_relative_l2" => 6.86124499649783e-7, "velocity_theta_relative_l2" => 1.7007716519570856e-7, "divergence_relative_l2" => 6.763003680306904e-7)
+shtnskit T21 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 2.315431614558846e-15, "vorticity_relative_l2" => 9.254317250374448e-15, "velocity_theta_relative_l2" => 2.268710515472788e-15, "divergence_relative_l2" => 9.322853161020804e-15)
+shtnskit T21 Float32 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 1.4072680223622037e-7, "vorticity_relative_l2" => 3.8130378433343534e-7, "velocity_theta_relative_l2" => 1.3351437880649483e-7, "divergence_relative_l2" => 3.81918992800453e-7)
+speedy T255 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 5.209973386327497e-14, "vorticity_relative_l2" => 2.5914626782821374e-12, "velocity_theta_relative_l2" => 5.120450956849684e-14, "divergence_relative_l2" => 2.5828844400128864e-12)
+speedy T255 Float32 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 7.791260931801912e-7, "vorticity_relative_l2" => 1.0661760987155525e-5, "velocity_theta_relative_l2" => 7.296683154264653e-7, "divergence_relative_l2" => 1.0605785965007074e-5)
+speedy T127 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 2.0784539315850163e-14, "vorticity_relative_l2" => 5.270649133265989e-13, "velocity_theta_relative_l2" => 2.0595439173824342e-14, "divergence_relative_l2" => 5.296970386906461e-13)
+speedy T127 Float32 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 5.108509125695494e-7, "vorticity_relative_l2" => 4.2117303452151965e-6, "velocity_theta_relative_l2" => 5.350430901880605e-7, "divergence_relative_l2" => 4.228257278933857e-6)
+speedy T63 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 6.568893797891185e-15, "vorticity_relative_l2" => 7.843911369757318e-14, "velocity_theta_relative_l2" => 6.5074165754836666e-15, "divergence_relative_l2" => 7.894217683939217e-14)
+speedy T63 Float32 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 4.170988272670115e-7, "vorticity_relative_l2" => 1.7146076876968567e-6, "velocity_theta_relative_l2" => 3.3145271367633957e-7, "divergence_relative_l2" => 1.693746559168936e-6)
+speedy T42 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 6.641642185963735e-15, "vorticity_relative_l2" => 4.6147350110603854e-14, "velocity_theta_relative_l2" => 6.6073632310307165e-15, "divergence_relative_l2" => 4.6663451666254765e-14)
+speedy T42 Float32 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 3.296748417171875e-7, "vorticity_relative_l2" => 1.068553601716428e-6, "velocity_theta_relative_l2" => 3.21497856547021e-7, "divergence_relative_l2" => 1.056727477904071e-6)
+speedy T21 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 3.6059354358545206e-15, "vorticity_relative_l2" => 1.7951780922565006e-14, "velocity_theta_relative_l2" => 3.5598253951198044e-15, "divergence_relative_l2" => 1.7868461000860597e-14)
+speedy T21 Float32 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 2.4516327750172835e-7, "vorticity_relative_l2" => 4.962273459900637e-7, "velocity_theta_relative_l2" => 2.3262883151175542e-7, "divergence_relative_l2" => 4.470079620798379e-7)

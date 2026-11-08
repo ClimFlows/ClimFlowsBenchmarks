@@ -1,0 +1,25 @@
+shtns T21 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 1.83502413660665e-15, "vorticity_relative_l2" => 7.598517300213687e-15, "velocity_theta_relative_l2" => 1.8538827559524974e-15, "divergence_relative_l2" => 7.612318768542588e-15)
+shtns T42 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 6.710330541139504e-15, "vorticity_relative_l2" => 6.4925085277493e-14, "velocity_theta_relative_l2" => 6.577582424712834e-15, "divergence_relative_l2" => 6.361066408905877e-14)
+shtns T63 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 4.912175933585805e-15, "vorticity_relative_l2" => 6.90569448381112e-14, "velocity_theta_relative_l2" => 4.9592356986469076e-15, "divergence_relative_l2" => 6.93676191309496e-14)
+shtns T127 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 1.768916502739629e-14, "vorticity_relative_l2" => 3.823249423336652e-13, "velocity_theta_relative_l2" => 1.7332771143878823e-14, "divergence_relative_l2" => 3.7669486870681547e-13)
+shtns T255 Float64 batch=64
+  ok errors=Dict("velocity_phi_relative_l2" => 7.43065575083715e-14, "vorticity_relative_l2" => 4.002735125281858e-12, "velocity_theta_relative_l2" => 7.257289425372101e-14, "divergence_relative_l2" => 3.941784113815829e-12)
+  cuda GPU #0 "NVIDIA RTX PRO 1000 Blackwell Generation Laptop GPU" found (warp size = 32, compute capabilities = 12.0, CU=20, max_threads=30720, 7.53 GB, L2 cache=32MB).
+!!! Use theta-contiguous FFT on GPU !!!
+=> Using VkFFT v1.2.33
+  cuda GPU #0 "NVIDIA RTX PRO 1000 Blackwell Generation Laptop GPU" found (warp size = 32, compute capabilities = 12.0, CU=20, max_threads=30720, 7.53 GB, L2 cache=32MB).
+!!! Use theta-contiguous FFT on GPU !!!
+=> Using VkFFT v1.2.33
+  cuda GPU #0 "NVIDIA RTX PRO 1000 Blackwell Generation Laptop GPU" found (warp size = 32, compute capabilities = 12.0, CU=20, max_threads=30720, 7.53 GB, L2 cache=32MB).
+!!! Use theta-contiguous FFT on GPU !!!
+=> Using VkFFT v1.2.33
+  cuda GPU #0 "NVIDIA RTX PRO 1000 Blackwell Generation Laptop GPU" found (warp size = 32, compute capabilities = 12.0, CU=20, max_threads=30720, 7.53 GB, L2 cache=32MB).
+!!! Use theta-contiguous FFT on GPU !!!
+=> Using VkFFT v1.2.33
+  cuda GPU #0 "NVIDIA RTX PRO 1000 Blackwell Generation Laptop GPU" found (warp size = 32, compute capabilities = 12.0, CU=20, max_threads=30720, 7.53 GB, L2 cache=32MB).
+!!! Use theta-contiguous FFT on GPU !!!
+=> Using VkFFT v1.2.33

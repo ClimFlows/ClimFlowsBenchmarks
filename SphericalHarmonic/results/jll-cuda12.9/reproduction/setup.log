@@ -1,0 +1,112 @@
+shtns-c.tar.gz: OK
+shtns-julia.tar.gz: OK
+shtnskit.tar.gz: OK
+speedy.tar.gz: OK
+ERROR: Data Error : jl_7A3YpI7al0-download
+
+[2824610] signal 2: Interrupt
+in expression starting at /home/dubos/Documents/ChatGPT/ClimFlows/sht-gpu-benchmarks/build/reproduction-jll-clean/workspace/scripts/instantiate.jl:10
+epoll_pwait at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+uv__io_poll at /workspace/srcdir/libuv/src/unix/linux.c:1404
+uv_run at /workspace/srcdir/libuv/src/unix/core.c:430
+ijl_task_get_next at /cache/build/builder-amdci4-7/julialang/julia-release-1-dot-11/src/scheduler.c:522
+poptask at ./task.jl:1012
+wait at ./task.jl:1021
+task_done_hook at ./task.jl:694
+jfptr_task_done_hook_66653.1 at /home/dubos/.julia/juliaup/julia-1.11.9+0.x64.linux.gnu/lib/julia/sys.so (unknown line)
+jl_apply at /cache/build/builder-amdci4-7/julialang/julia-release-1-dot-11/src/julia.h:2157 [inlined]
+jl_finish_task at /cache/build/builder-amdci4-7/julialang/julia-release-1-dot-11/src/task.c:315
+start_task at /cache/build/builder-amdci4-7/julialang/julia-release-1-dot-11/src/task.c:1215
+unknown function (ip: (nil))
+Allocations: 10458575 (Pool: 10455673; Big: 2902); GC: 25
+Precompiling CUDA_Runtime_jll...
+    426.2 ms  ✓ Preferences
+    717.9 ms  ✓ LazyArtifacts
+    353.5 ms  ✓ JLLWrappers
+    697.5 ms  ✓ CUDA_Driver_jll
+   1096.6 ms  ✓ CUDA_Runtime_jll
+  5 dependencies successfully precompiled in 3 seconds. 23 already precompiled.
+ Downloading artifact: CUDA_Runtime
+     Failure artifact: CUDA_Runtime
+ Downloading artifact: CUDA_Runtime
+     Failure artifact: CUDA_Runtime
+Precompiling Pkg...
+    355.7 ms  ✓ Unicode
+    352.3 ms  ✓ NetworkOptions
+    290.7 ms  ✓ Logging
+    340.7 ms  ✓ UUIDs
+    343.9 ms  ✓ MbedTLS_jll
+    353.3 ms  ✓ Zlib_jll
+    392.1 ms  ✓ Base64
+    301.2 ms  ✓ MozillaCACerts_jll
+    995.7 ms  ✓ ArgTools
+    319.7 ms  ✓ nghttp2_jll
+    347.8 ms  ✓ p7zip_jll
+    390.3 ms  ✓ Printf
+    368.8 ms  ✓ LibSSH2_jll
+    485.7 ms  ✓ Tar
+   1694.0 ms  ✓ Markdown
+    339.7 ms  ✓ LibGit2_jll
+   1352.9 ms  ✓ Dates
+    328.6 ms  ✓ LibCURL_jll
+    384.0 ms  ✓ TOML
+    458.5 ms  ✓ LibCURL
+   1284.4 ms  ✓ LibGit2
+   1920.7 ms  ✓ Downloads
+  36246.3 ms  ✓ Pkg
+  23 dependencies successfully precompiled in 44 seconds
+  Installing known registries into `~/Documents/ChatGPT/ClimFlows/sht-gpu-benchmarks/build/reproduction-jll-clean/depot`
+       Added `General` registry to ~/Documents/ChatGPT/ClimFlows/sht-gpu-benchmarks/build/reproduction-jll-clean/depot/registries
+   Installed TableTraits ───────────────── v1.0.1
+   Installed demumble_jll ──────────────── v1.3.0+0
+   Installed Crayons ───────────────────── v4.2.0
+   Installed GPUArraysCore ─────────────── v0.2.1
+   Installed Scratch ───────────────────── v1.3.0
+   Installed Adapt ─────────────────────── v4.8.0
+   Installed Preferences ───────────────── v1.6.1
+   Installed LLVMOpenMP_jll ────────────── v23.1.1+0
+   Installed DataAPI ───────────────────── v1.16.0
+   Installed HashArrayMappedTries ──────── v0.2.0
+   Installed CUDA_Driver_jll ───────────── v13.5.0+0
+   Installed Tables ────────────────────── v1.14.0
+   Installed LLVMLoopInfo ──────────────── v1.0.0
+   Installed PrettyTables ──────────────── v3.5.1
+   Installed GPUCompiler ───────────────── v1.17.1
+   Installed StaticArraysCore ──────────── v1.4.4
+   Installed JLLWrappers ───────────────── v1.8.0
+   Installed AbstractFFTs ──────────────── v1.5.0
+   Installed IteratorInterfaceExtensions ─ v1.0.0
+   Installed Tracy ─────────────────────── v0.1.6
+   Installed StaticArrays ──────────────── v1.9.24
+   Installed PrecompileTools ───────────── v1.2.1
+   Installed SHTns_jll ─────────────────── v3.7.0+0
+   Installed CUDA_Runtime_Discovery ────── v2.1.1
+   Installed DataValueInterfaces ───────── v1.0.0
+   Installed NVTX_jll ──────────────────── v3.2.2+0
+   Installed LLVMExtra_jll ─────────────── v0.0.47+0
+   Installed OrderedCollections ────────── v2.0.3
+   Installed NVTX ──────────────────────── v1.0.3
+   Installed CUDA_Compiler_jll ─────────── v0.4.4+1
+   Installed GPUToolbox ────────────────── v1.1.1
+   Installed LaTeXStrings ──────────────── v1.4.1
+   Installed JuliaNVTXCallbacks_jll ────── v0.2.1+0
+   Installed CEnum ─────────────────────── v0.5.0
+   Installed ScopedValues ──────────────── v1.6.2
+   Installed Random123 ─────────────────── v1.7.1
+   Installed RandomNumbers ─────────────── v1.6.0
+   Installed Reexport ──────────────────── v1.2.2
+   Installed GPUArrays ─────────────────── v11.5.16
+   Installed BFloat16s ─────────────────── v0.6.5
+   Installed Statistics ────────────────── v1.11.5
+   Installed FFTW_jll ──────────────────── v3.3.12+0
+   Installed ExprTools ─────────────────── v0.1.11
+   Installed Requires ──────────────────── v1.3.1
+   Installed LibTracyClient_jll ────────── v0.13.1+0
+   Installed CUDA_Runtime_jll ──────────── v0.21.0+1
+   Installed KernelAbstractions ────────── v0.9.45
+   Installed MacroTools ────────────────── v0.5.16
+   Installed UnsafeAtomics ─────────────── v0.3.2
+   Installed Atomix ────────────────────── v1.2.1
+   Installed StringManipulation ────────── v0.6.1
+   Installed LLVM ──────────────────────── v9.13.2
+   Installed CUDA ──────────────────────── v5.11.3
