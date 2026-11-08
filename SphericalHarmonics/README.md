@@ -83,3 +83,19 @@ local SHTns 3.7.5/CUDA 13.1 and JLL SHTns 3.7.0/CUDA 12.9 differ in both version
 For the optional local build, set `CUDA_PATH` (CUDA 13.1) and `CUDA_ARCH`, run
 `setup.sh shtns` then `build_shtns.sh`, and select `run.sh shtns`. Set
 `CUDA_MATH_LIBS` if math libraries are outside the toolkit's `lib64` directory.
+
+## Results
+
+![Round-trip GPU medians for 64 vector fields, shown separately for Float32 and Float64 on logarithmic time axes.](results/roundtrip.svg)
+
+SpeedyTransforms is fastest in Float32; SHTns is fastest in Float64.
+At T255, their round trips take **48.48 ms** (SpeedyTransforms Float32) and
+**60.70 ms** (SHTns JLL Float64). All measured cases pass numerical validation
+and allocate zero CPU/GPU bytes per timed call.
+
+Regenerate the figure with Julia:
+
+```sh
+"$JULIA" --project=plotting -e 'using Pkg; Pkg.instantiate()'
+"$JULIA" --project=plotting scripts/plot_results.jl
+```
