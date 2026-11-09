@@ -96,7 +96,7 @@ For the optional local build, set `CUDA_PATH` (CUDA 13.1) and `CUDA_ARCH`, run
 
 ## Results
 
-![Round-trip GPU medians for 64 vector fields, shown separately for Float32 and Float64 on logarithmic time axes.](results/roundtrip.svg)
+![Round-trip GPU medians for 64 vector fields, shown separately for Float32 and Float64 on logarithmic time axes.](results/roundtrip-torch.svg)
 
 torch-harmonics is fastest in Float32 through T63; SpeedyTransforms is faster
 at T127 and T255. SHTns is fastest in Float64. At T255, round trips take

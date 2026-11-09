@@ -32,7 +32,7 @@ for (column, precision) in enumerate(("Float32", "Float64"))
     axislegend(ax; position=:lt, labelsize=11, framevisible=false)
 end
 Label(fig[0, :], "CUDA vector transforms · batch 64 · lower is better"; fontsize=16)
-destination = joinpath(ROOT, "results", "roundtrip.svg")
+destination = joinpath(ROOT, "results", "roundtrip-torch.svg")
 save(destination, fig)
 isempty(ARGS) || save(only(ARGS), fig) # Optional PNG preview.
 println(destination)
