@@ -24,8 +24,14 @@ def summarize(folder):
     for metadata in sorted(folder.glob("*/metadata.toml")):
         backend = metadata.parent
         meta, config = read(metadata), read(backend / "config.toml")
-        check(hashlib.sha256((backend / "Manifest.toml").read_bytes()).hexdigest()
-              == meta["manifest_sha256"], f"{backend}: manifest checksum mismatch")
+        if "manifest_sha256" in meta:
+            check(hashlib.sha256((backend / "Manifest.toml").read_bytes()).hexdigest()
+                  == meta["manifest_sha256"], f"{backend}: manifest checksum mismatch")
+        elif "uv_lock_sha256" in meta:
+            check(hashlib.sha256((backend / "uv.lock").read_bytes()).hexdigest()
+                  == meta["uv_lock_sha256"], f"{backend}: uv.lock checksum mismatch")
+        else:
+            raise ValueError(f"{backend}: no dependency lock checksum recorded")
         if meta.get("shtns_binary_origin") == "jll":
             check(meta["shtns_library_sha256"] == JLL_SHA256, "Unexpected SHTns_jll binary")
         args = dict(a[2:].split("=", 1) if "=" in a else (a[2:], "true")
@@ -51,14 +57,25 @@ def summarize(folder):
                     check(all(math.isfinite(e) and 0 <= e <= result["tolerance"]
                               for e in result["errors"].values()), f"{path}: invalid numerical errors")
                     if expected == "ok":
-                        check(result["mode"] == "inplace", f"{path}: unexpected measurement mode")
+                        expected_mode = "cuda-graph-replay" if backend.name == "torch-harmonics" else "inplace"
+                        check(result["mode"] == expected_mode, f"{path}: unexpected measurement mode")
                         check(result["post_measurement_velocity_error"] <= result["tolerance"],
                               f"{path}: repeated execution failed validation")
                         for operation in OPERATIONS:
                             stats = result[operation]
-                            check(all(stats[key] == 0 for key in (
-                                "gpu_allocated_bytes_per_call", "host_allocated_bytes_per_call",
-                                "direct_gpu_allocated_bytes_per_call")), f"{path}: allocations detected")
+                            if backend.name == "torch-harmonics":
+                                check(stats["gpu_allocated_bytes_per_call"] == 0,
+                                      f"{path}: CUDA graph replay allocated GPU memory")
+                                check(stats["cuda_graph_memcpy_node_count"] == len(stats["cuda_graph_memcpy_kinds"]),
+                                      f"{path}: inconsistent CUDA graph copy metadata")
+                                check(not any(kind in ("cudaMemcpyHostToDevice", "cudaMemcpyDeviceToHost",
+                                                      "cudaMemcpyDefault")
+                                              for kind in stats["cuda_graph_memcpy_kinds"]),
+                                      f"{path}: CPU-GPU transfer node in measured graph")
+                            else:
+                                check(all(stats[key] == 0 for key in (
+                                    "gpu_allocated_bytes_per_call", "host_allocated_bytes_per_call",
+                                    "direct_gpu_allocated_bytes_per_call")), f"{path}: allocations detected")
                             check(len(stats["seconds"]) == stats["samples"] >= minimum,
                                   f"{path}: insufficient samples")
                             check(all(math.isfinite(t) and t > 0 for t in stats["seconds"]),
@@ -73,7 +90,7 @@ def summarize(folder):
                 rows.append((degree, label, precision, batch, expected, times))
     check(bool(rows), f"No recorded runs found in {folder}")
     lines = ["# Vector spherical harmonic transforms", "",
-             "GPU median milliseconds per batch; preallocated buffers and warmed execution.", "",
+             "GPU median milliseconds per batch; warmed execution.", "",
              "| T | Backend | Precision | Batch | Status | Analysis | Synthesis | Round trip |",
              "|---:|---|---|---:|---|---:|---:|---:|"]
     for degree, label, precision, batch, status, times in sorted(rows):
@@ -82,7 +99,12 @@ def summarize(folder):
         duration = sum(s["gpu_measured_seconds"] for s in measurements)
         executions = sum(s["executions"] for s in measurements)
         lines += ["", f"{duration:.3f} GPU seconds; {executions:,} executions; "
-                  f"{len(measurements)} measured operations. Zero measured CPU/GPU allocation per call."]
+                  f"{len(measurements)} measured operations."]
+        if any(meta.get("backend") == "torch-harmonics"
+               for meta in (read(path) for path in folder.glob("*/metadata.toml"))):
+            lines.append("Julia adapters use preallocated in-place buffers. torch-harmonics inputs are uploaded before capture; timed CUDA graphs contain no host↔device memcpy nodes. Device-to-device copies, where recorded, remain timed.")
+        else:
+            lines.append("Timed Julia calls allocate zero CPU/GPU bytes per call.")
     (folder / "summary.md").write_text("\n".join(lines) + "\n")
     print(f"Validated {len(rows)} cases: {folder / 'summary.md'}")
 

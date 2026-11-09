@@ -1,6 +1,6 @@
 # Vector spherical harmonic transforms
 
-GPU median milliseconds per batch; preallocated buffers and warmed execution.
+GPU median milliseconds per batch; warmed execution.
 
 | T | Backend | Precision | Batch | Status | Analysis | Synthesis | Round trip |
 |---:|---|---|---:|---|---:|---:|---:|
@@ -15,4 +15,5 @@ GPU median milliseconds per batch; preallocated buffers and warmed execution.
 | 255 | shtns (JLL) | Float32 | 64 | unsupported | — | — | — |
 | 255 | shtns (JLL) | Float64 | 64 | ok | 32.4052 | 27.6633 | 60.7018 |
 
-60.002 GPU seconds; 144,568 executions; 15 measured operations. Zero measured CPU/GPU allocation per call.
+60.002 GPU seconds; 144,568 executions; 15 measured operations.
+Timed Julia calls allocate zero CPU/GPU bytes per call.

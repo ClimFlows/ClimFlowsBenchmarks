@@ -2,6 +2,8 @@ vendor/
 build/
 .depot/
 __pycache__/
+.venv/
 results/*/
 !results/inplace-minute/
 !results/jll-cuda12.9/
+!results/torch-minute/

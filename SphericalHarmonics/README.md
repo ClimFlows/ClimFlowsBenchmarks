@@ -1,8 +1,8 @@
 # Spherical harmonic transforms
 
-CUDA vector transforms using SHTns.jl, SHTnsKit.jl and SpeedyTransforms.jl.
-Requirements: Linux x86_64, Julia 1.11.9, Python ≥3.11, Bash, tar, sha256sum,
-a compatible NVIDIA driver, network access and several GB of disk space.
+CUDA vector transforms using SHTns.jl, SHTnsKit.jl, SpeedyTransforms.jl and
+torch-harmonics. Requirements: Linux x86_64, Julia 1.11.9, Python ≥3.11, Bash,
+tar, sha256sum, uv for PyTorch, a compatible NVIDIA driver and network access.
 
 ## Run
 
@@ -21,23 +21,30 @@ and supports Float64 through the pinned wrapper. Sources and licenses are
 archived under `sources/`; manifests and runtime preferences are under
 `environments/`.
 
-For a new workspace and an empty Julia depot:
+For the PyTorch backend:
 
 ```sh
-bash scripts/reproduce_jll.sh
+JULIA=/path/to/julia-1.11.9/bin/julia bash scripts/run_torch.sh \
+  --out=results/torch-minute --seconds-total=60
+python3 scripts/report.py results/torch-minute
 ```
 
-This runs the complete SHTns_jll protocol. Fresh-depot execution is not yet
-verified end to end.
+The PyTorch environment is pinned by `environments/torch/uv.lock` and uses
+PyTorch 2.9.1 with NVIDIA's `torch-harmonics-cu130` 0.9.3 wheel. Fixture
+coefficients are exported from Julia to keep the analytic fields identical.
 
 ## Protocol
 
 - Batch: 64 tangential vector fields, with two real components each.
 - Precisions: Float32 and Float64; unsupported combinations are recorded.
 - Operations: velocity → divergence/vorticity, inverse reconstruction, round trip.
-- Inputs, outputs, scratch buffers and plans are allocated before timing.
-- Warmed CUDA graph replay is used where supported; timed calls must allocate
-  zero CPU/GPU bytes. Direct-call host allocations are recorded separately.
+- Julia backends use preallocated inputs, outputs, scratch buffers and plans.
+- torch-harmonics returns tensors through its public API; CUDA Graph capture
+  retains internal buffers in a fixed pool. Inputs are uploaded before capture
+  and timing. Each measured graph is rejected if it contains host↔device memcpy
+  or uninspected child-graph nodes; device-to-device copies are reported.
+- Julia timed calls allocate zero CPU/GPU bytes. PyTorch replay adds no CUDA
+  allocations per call; eager-call peak memory and graph-pool size are recorded.
 - CUDA events measure device time; all context streams are synchronized after
   each sample. Preparation, validation, compilation and warmup are excluded.
 - Budget: approximately 60 GPU seconds across the default comparison, with
@@ -49,7 +56,9 @@ verified end to end.
   sparse set of low, intermediate and near-cutoff modes, not every coefficient.
 
 SHTns uses its public in-place API. SHTnsKit and SpeedyTransforms adapters
-compose pinned internal kernels and reuse FFT plans and buffers.
+compose pinned internal kernels and reuse FFT plans and buffers. PyTorch uses
+the public vector SHT modules and cuFFT; a prebuilt Hermitian mask makes inverse
+FFT graph capture safe.
 
 | Truncation | Maximum degree | Latitude × longitude | Longitude spacing |
 |---|---:|---:|---:|
@@ -75,6 +84,7 @@ library hashes. Recorded paths are provenance, not reproduction inputs.
 
 - [Three-library results](results/inplace-minute/summary.md)
 - [SHTns_jll results](results/jll-cuda12.9/summary.md)
+- [PyTorch results](results/torch-minute/summary.md)
 
 Reference GPU: RTX PRO 1000 Blackwell Laptop, 8151 MiB, compute capability 12.0.
 Use AC power and an otherwise idle GPU. Compare timings at the same precision;
@@ -88,10 +98,13 @@ For the optional local build, set `CUDA_PATH` (CUDA 13.1) and `CUDA_ARCH`, run
 
 ![Round-trip GPU medians for 64 vector fields, shown separately for Float32 and Float64 on logarithmic time axes.](results/roundtrip.svg)
 
-SpeedyTransforms is fastest in Float32; SHTns is fastest in Float64.
-At T255, their round trips take **48.48 ms** (SpeedyTransforms Float32) and
-**60.70 ms** (SHTns JLL Float64). All measured cases pass numerical validation
-and allocate zero CPU/GPU bytes per timed call.
+torch-harmonics is fastest in Float32 through T63; SpeedyTransforms is faster
+at T127 and T255. SHTns is fastest in Float64. At T255, round trips take
+**48.48 ms** (SpeedyTransforms Float32), **60.70 ms** (SHTns JLL Float64), and
+**337.75 ms** (torch-harmonics Float64). All measured cases pass validation;
+captured PyTorch graphs contain no host↔device memcpy nodes. Synthesis and
+round-trip graphs include a device-to-device copy, which is included in their
+reported device time.
 
 Regenerate the figure with Julia:
 

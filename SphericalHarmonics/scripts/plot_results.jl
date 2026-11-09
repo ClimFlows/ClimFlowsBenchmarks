@@ -7,6 +7,7 @@ const SERIES = (
     ("SHTns JLL", "jll-cuda12.9", "shtns", "#2563eb", :solid, ("Float64",)),
     ("SHTnsKit", "inplace-minute", "shtnskit", "#b45309", :solid, ("Float32", "Float64")),
     ("SpeedyTransforms", "inplace-minute", "speedy", "#9333ea", :solid, ("Float32", "Float64")),
+    ("torch-harmonics", "torch-minute", "torch-harmonics", "#dc2626", :solid, ("Float32", "Float64")),
 )
 
 fig = Figure(size=(950, 390), fontsize=13)

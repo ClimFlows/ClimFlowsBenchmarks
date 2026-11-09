@@ -1,0 +1,16 @@
+batch = 64
+precisions = [
+    "Float32",
+    "Float64",
+]
+warmup = 3
+gpu_seconds_total = 60.0
+min_samples = 10
+seed = 20261107
+cases = [
+    { lmax = 21, nlat = 32, nlon = 64 },
+    { lmax = 42, nlat = 64, nlon = 128 },
+    { lmax = 63, nlat = 96, nlon = 192 },
+    { lmax = 127, nlat = 192, nlon = 384 },
+    { lmax = 255, nlat = 384, nlon = 768 },
+]

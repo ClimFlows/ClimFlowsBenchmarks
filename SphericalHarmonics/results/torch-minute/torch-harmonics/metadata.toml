@@ -1,0 +1,20 @@
+backend = "torch-harmonics"
+utc_started = "2026-11-09T18:35:06Z"
+gpu = "NVIDIA RTX PRO 1000 Blackwell Generation Laptop GPU"
+compute_capability = "12.0"
+total_memory_bytes = 8082685952
+python_version = "3.13.13"
+torch_version = "2.9.1+cu130"
+torch_cuda_version = "13.0"
+torch_harmonics_version = "0.9.3+torch2.9.1.cu130"
+uv_lock_sha256 = "a43756d1f81eec1bfef46eef1192d974f292eda651b8e050ec91500c4c802d0d"
+arguments = [
+    "--out=results/torch-minute",
+    "--lmax=21,42,63,127,255",
+    "--precision=Float32,Float64",
+    "--batch=64",
+    "--warmup=3",
+    "--seconds-total=60.0",
+    "--min-samples=10",
+]
+measurement = "CUDA event timings over warmed graph replays; graph pool is created before timing and reused."
