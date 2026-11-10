@@ -150,13 +150,16 @@ For the optional local build, set `CUDA_PATH` (CUDA 13.1) and `CUDA_ARCH`, run
 
 ![Round-trip CUDA medians for 64 vector fields, shown separately for Float32 and Float64 on logarithmic time axes. JAX reports synchronized wall time including dispatch.](results/roundtrip-jax.svg)
 
-torch-harmonics is fastest in Float32 through T63; SpeedyTransforms is faster
-at T127 and T255. SHTns is fastest in Float64. At T255, round trips take
-**48.48 ms** (SpeedyTransforms Float32), **60.70 ms** (SHTns JLL Float64), and
+SHTns JLL with the Float32 wrapper is fastest in Float32 among the recorded
+runs; the local SHTns build remains fastest in Float64. At T255, round trips take **16.53 ms** (SHTns JLL Float32),
+**48.48 ms** (SpeedyTransforms Float32), **58.69 ms** (SHTns JLL Float64), and
 **337.75 ms** (torch-harmonics Float64). All supported measured cases pass validation;
 captured PyTorch graphs contain no host↔device memcpy nodes. Synthesis and
 round-trip graphs include a device-to-device copy, which is included in their
-reported device time.
+reported device time. The SHTns JLL curves use the public API run in
+[CUDA Float32 results](results/cuda-float32/summary.md); T255 Float32 uses the
+explicit single-block reduction profile described in
+[validation notes](results/cuda-float32/VALIDATION.md).
 S2FFT/JAX is slower on the shared Float32 range: round trips take **11.64 ms**
 at T21 and **1.62 s** at T127. With synchronized wall timing, Dinosaur is
 about 32× and 8× faster at those truncations. S2FFT has no T255 result.
