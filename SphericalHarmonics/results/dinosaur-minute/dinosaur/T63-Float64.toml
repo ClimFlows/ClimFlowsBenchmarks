@@ -1,0 +1,16 @@
+status = "unsupported"
+backend = "dinosaur"
+lmax = 63
+precision = "Float64"
+batch = 64
+nlat = 96
+nlon = 192
+mode = "jax-jit-device-resident"
+tolerance = 5e-09
+notes = "Dinosaur's modal basis and FFT scaling are Float32; Float64 does not meet the benchmark's 5e-9 accuracy threshold."
+
+[errors]
+vorticity_spectral_relative_l2 = 2.1484890439587436e-07
+divergence_spectral_relative_l2 = 2.15109599721619e-07
+velocity_east_relative_l2 = 2.0828722252406542e-08
+velocity_north_relative_l2 = 2.068570725631045e-08

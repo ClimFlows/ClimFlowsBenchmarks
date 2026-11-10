@@ -1,0 +1,107 @@
+status = "ok"
+backend = "legoesm"
+lmax = 255
+precision = "Float64"
+batch = 64
+nlat = 384
+nlon = 768
+modal_shape = [
+    32896,
+    64,
+]
+legoesm_sh_chunk_size = 8
+mode = "jax-jit-device-resident"
+tolerance = 5e-10
+notes = "Native Gaussian-grid vector wind↔vorticity/divergence operators; quadratic dealiasing."
+post_measurement_velocity_error = 2.4246055704706278e-11
+
+[errors]
+vorticity_spectral_relative_l2 = 5.0206976301817046e-12
+divergence_spectral_relative_l2 = 5.063075911300137e-12
+
+[analysis]
+seconds = [
+    0.4191167959943414,
+    0.3908268000232056,
+    0.3848005799809471,
+    0.4154714950127527,
+    0.37816979992203414,
+    0.4072562949731946,
+    0.3924010240007192,
+    0.3893068660981953,
+    0.40822903998196125,
+    0.3848196610342711,
+]
+minimum_seconds = 0.37816979992203414
+median_seconds = 0.3916139120119624
+p95_seconds = 0.41747641055262646
+measured_wall_seconds = 3.9703983570216224
+target_wall_seconds = 2.0
+samples = 10
+repeats_per_sample = 1
+executions = 10
+host_to_device_transfers_timed = 0
+device_to_host_transfers_timed = 0
+inputs_resident_on_device = true
+outputs_resident_on_device = true
+execution_path = "JAX jit with device-resident inputs; synchronized wall time includes dispatch"
+timing_scope = "synchronized wall time; includes JAX host dispatch, excludes transfers"
+vector_fields_per_second = 163.42626765017744
+
+[synthesis]
+seconds = [
+    0.6718822419643402,
+    0.6496986250858754,
+    0.6811288669705391,
+    0.6817339940462261,
+    0.6605848899343982,
+    0.6841064270120114,
+    0.6801163379568607,
+    0.6678600440500304,
+    0.6742601880105212,
+    0.678949475986883,
+]
+minimum_seconds = 0.6496986250858754
+median_seconds = 0.6766048319987021
+p95_seconds = 0.683038832177408
+measured_wall_seconds = 6.730321091017686
+target_wall_seconds = 2.0
+samples = 10
+repeats_per_sample = 1
+executions = 10
+host_to_device_transfers_timed = 0
+device_to_host_transfers_timed = 0
+inputs_resident_on_device = true
+outputs_resident_on_device = true
+execution_path = "JAX jit with device-resident inputs; synchronized wall time includes dispatch"
+timing_scope = "synchronized wall time; includes JAX host dispatch, excludes transfers"
+vector_fields_per_second = 94.5899245368126
+
+[roundtrip]
+seconds = [
+    1.1160469439346343,
+    1.1197653629351407,
+    1.1188948879716918,
+    1.1223025799263269,
+    1.1179629999678582,
+    1.124877683003433,
+    1.1181505839340389,
+    1.1201861350564286,
+    1.1241027669748291,
+    1.1197385010309517,
+]
+minimum_seconds = 1.1160469439346343
+median_seconds = 1.1197519319830462
+p95_seconds = 1.1245289707905612
+measured_wall_seconds = 11.202028444735333
+target_wall_seconds = 2.0
+samples = 10
+repeats_per_sample = 1
+executions = 10
+host_to_device_transfers_timed = 0
+device_to_host_transfers_timed = 0
+inputs_resident_on_device = true
+outputs_resident_on_device = true
+execution_path = "JAX jit with device-resident inputs; synchronized wall time includes dispatch"
+timing_scope = "synchronized wall time; includes JAX host dispatch, excludes transfers"
+vector_fields_per_second = 57.15551647824172

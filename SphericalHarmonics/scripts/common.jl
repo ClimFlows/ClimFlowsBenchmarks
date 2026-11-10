@@ -24,14 +24,19 @@ function legendre_mode(l, m, theta)
     return p, (l * x * p - c * prev) / s
 end
 
+function fixture_coefficients(L, B, seed)
+    modes = unique([(1, 0), (2, 1), (3, 2), (L ÷ 2, L ÷ 3), (L - 1, 1), (L, L)])
+    rng = MersenneTwister(seed)
+    coeff = randn(rng, length(modes), B, 4)
+    return modes, coeff
+end
+
 """Shared analytic vector fixture: grad(chi) + r × grad(psi), unit sphere.
 Both potentials contain low and near-cutoff modes, different in every batch member.
 Arrays use (latitude, longitude, batch); evaluated in Float64 then rounded once.
 """
 function fixture(theta, phi, L, B, ::Type{T}, seed) where T
-    modes = unique([(1, 0), (2, 1), (3, 2), (L ÷ 2, L ÷ 3), (L - 1, 1), (L, L)])
-    rng = MersenneTwister(seed)
-    coeff = randn(rng, length(modes), B, 4)
+    modes, coeff = fixture_coefficients(L, B, seed)
     shape = (length(theta), length(phi), B)
     vt, vp, div, vor = (zeros(Float64, shape) for _ in 1:4)
     for (q, (l, m)) in enumerate(modes)

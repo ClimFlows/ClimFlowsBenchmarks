@@ -1,0 +1,18 @@
+backend = "s2fft-jax"
+utc_started = "2026-11-10T15:21:17Z"
+gpu = "NVIDIA RTX PRO 1000 Blackwell Generation Laptop GPU"
+compute_capability = "12.0"
+python_version = "3.13.13"
+jax_version = "0.12.0.1"
+s2fft_version = "1.5.0"
+uv_lock_sha256 = "06cab42a62f872a99a33ab3db9c1c3766022512b8bbb6990d6fe6128243ff766"
+arguments = [
+    "--out=results/jax-minute",
+    "--lmax=21,42,63,127",
+    "--precision=Float32,Float64",
+    "--batch=64",
+    "--warmup=3",
+    "--seconds-total=10.0",
+    "--min-samples=10",
+]
+measurement = "Warmed jitted calls with device-resident arrays; synchronized wall-clock timing; no host materialization or host-device transfers in timed region."

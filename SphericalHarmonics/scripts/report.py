@@ -21,11 +21,22 @@ def check(condition, message):
 
 def summarize(folder):
     rows, measurements = [], []
+    backend_names = set()
     for metadata in sorted(folder.glob("*/metadata.toml")):
         backend = metadata.parent
+        backend_names.add(backend.name)
         meta, config = read(metadata), read(backend / "config.toml")
-        check(hashlib.sha256((backend / "Manifest.toml").read_bytes()).hexdigest()
-              == meta["manifest_sha256"], f"{backend}: manifest checksum mismatch")
+        if "manifest_sha256" in meta:
+            check(hashlib.sha256((backend / "Manifest.toml").read_bytes()).hexdigest()
+                  == meta["manifest_sha256"], f"{backend}: manifest checksum mismatch")
+        elif "uv_lock_sha256" in meta:
+            check(hashlib.sha256((backend / "uv.lock").read_bytes()).hexdigest()
+                  == meta["uv_lock_sha256"], f"{backend}: uv.lock checksum mismatch")
+        else:
+            raise ValueError(f"{backend}: no dependency lock checksum recorded")
+        if meta.get("backend") == "legoesm":
+            check(hashlib.sha256((backend / "legoesm-core.tar.gz").read_bytes()).hexdigest()
+                  == meta["legoesm_core_sha256"], f"{backend}: legoESM source checksum mismatch")
         if meta.get("shtns_binary_origin") == "jll":
             check(meta["shtns_library_sha256"] == JLL_SHA256, "Unexpected SHTns_jll binary")
         args = dict(a[2:].split("=", 1) if "=" in a else (a[2:], "true")
@@ -42,7 +53,11 @@ def summarize(folder):
                 result = read(path)
                 check((result["lmax"], result["precision"], result["batch"])
                       == (degree, precision, batch), f"{path}: case mismatch")
-                unsupported = backend.name == "shtns" and precision == "Float32"
+                if backend.name == "s2fft-jax":
+                    check(result["sampling_bandlimit"] == degree + 1,
+                          f"{path}: S2FFT bandlimit must represent degrees 0..lmax")
+                unsupported = ((backend.name == "shtns" and precision == "Float32")
+                               or (backend.name == "dinosaur" and precision == "Float64"))
                 expected = "unsupported" if unsupported else (
                     "validated" if "validate-only" in args else "ok")
                 check(result["status"] == expected, f"{path}: {result['status']}")
@@ -51,14 +66,37 @@ def summarize(folder):
                     check(all(math.isfinite(e) and 0 <= e <= result["tolerance"]
                               for e in result["errors"].values()), f"{path}: invalid numerical errors")
                     if expected == "ok":
-                        check(result["mode"] == "inplace", f"{path}: unexpected measurement mode")
+                        expected_mode = {
+                            "torch-harmonics": "cuda-graph-replay",
+                            "s2fft-jax": "jax-jit-device-resident",
+                            "dinosaur": "jax-jit-device-resident",
+                            "legoesm": "jax-jit-device-resident",
+                        }.get(backend.name, "inplace")
+                        check(result["mode"] == expected_mode, f"{path}: unexpected measurement mode")
                         check(result["post_measurement_velocity_error"] <= result["tolerance"],
                               f"{path}: repeated execution failed validation")
                         for operation in OPERATIONS:
                             stats = result[operation]
-                            check(all(stats[key] == 0 for key in (
-                                "gpu_allocated_bytes_per_call", "host_allocated_bytes_per_call",
-                                "direct_gpu_allocated_bytes_per_call")), f"{path}: allocations detected")
+                            if backend.name == "torch-harmonics":
+                                check(stats["gpu_allocated_bytes_per_call"] == 0,
+                                      f"{path}: CUDA graph replay allocated GPU memory")
+                                check(stats["cuda_graph_memcpy_node_count"] == len(stats["cuda_graph_memcpy_kinds"]),
+                                      f"{path}: inconsistent CUDA graph copy metadata")
+                                check(not any(kind in ("cudaMemcpyHostToDevice", "cudaMemcpyDeviceToHost",
+                                                      "cudaMemcpyDefault")
+                                              for kind in stats["cuda_graph_memcpy_kinds"]),
+                                      f"{path}: CPU-GPU transfer node in measured graph")
+                            elif backend.name in ("s2fft-jax", "dinosaur", "legoesm"):
+                                check(stats["host_to_device_transfers_timed"] == 0
+                                      and stats["device_to_host_transfers_timed"] == 0,
+                                      f"{path}: host-device transfer during timed JAX calls")
+                                check(stats["inputs_resident_on_device"]
+                                      and stats["outputs_resident_on_device"],
+                                      f"{path}: JAX arrays not GPU-resident")
+                            else:
+                                check(all(stats[key] == 0 for key in (
+                                    "gpu_allocated_bytes_per_call", "host_allocated_bytes_per_call",
+                                    "direct_gpu_allocated_bytes_per_call")), f"{path}: allocations detected")
                             check(len(stats["seconds"]) == stats["samples"] >= minimum,
                                   f"{path}: insufficient samples")
                             check(all(math.isfinite(t) and t > 0 for t in stats["seconds"]),
@@ -72,17 +110,28 @@ def summarize(folder):
                     label += " (JLL)" if meta.get("shtns_binary_origin") == "jll" else " (local)"
                 rows.append((degree, label, precision, batch, expected, times))
     check(bool(rows), f"No recorded runs found in {folder}")
-    lines = ["# Vector spherical harmonic transforms", "",
-             "GPU median milliseconds per batch; preallocated buffers and warmed execution.", "",
+    jax_timing = bool({"s2fft-jax", "dinosaur", "legoesm"} & backend_names)
+    timing_description = ("Synchronized JAX wall median milliseconds per batch; host dispatch included."
+                          if jax_timing else "GPU median milliseconds per batch; warmed execution.")
+    lines = ["# Vector spherical harmonic transforms", "", timing_description, "",
              "| T | Backend | Precision | Batch | Status | Analysis | Synthesis | Round trip |",
              "|---:|---|---|---:|---|---:|---:|---:|"]
     for degree, label, precision, batch, status, times in sorted(rows):
         lines.append(f"| {degree} | {label} | {precision} | {batch} | {status} | " + " | ".join(times) + " |")
     if measurements:
-        duration = sum(s["gpu_measured_seconds"] for s in measurements)
+        duration = sum(s.get("measured_wall_seconds", s.get("gpu_measured_seconds", 0.0)) for s in measurements)
         executions = sum(s["executions"] for s in measurements)
-        lines += ["", f"{duration:.3f} GPU seconds; {executions:,} executions; "
-                  f"{len(measurements)} measured operations. Zero measured CPU/GPU allocation per call."]
+        duration_unit = "synchronized wall seconds" if jax_timing else "GPU seconds"
+        lines += ["", f"{duration:.3f} {duration_unit}; {executions:,} executions; "
+                  f"{len(measurements)} measured operations."]
+        if any(meta.get("backend") == "torch-harmonics"
+               for meta in (read(path) for path in folder.glob("*/metadata.toml"))):
+            lines.append("Julia adapters use preallocated in-place buffers. torch-harmonics inputs are uploaded before capture; timed CUDA graphs contain no host↔device memcpy nodes. Device-to-device copies, where recorded, remain timed.")
+        elif any(meta.get("backend") in ("s2fft-jax", "dinosaur", "legoesm")
+                 for meta in (read(path) for path in folder.glob("*/metadata.toml"))):
+            lines.append("JAX backends use device-resident arrays; timed calls contain no host↔device transfers. Reported JAX times are synchronized wall times and include host dispatch.")
+        else:
+            lines.append("Timed Julia calls allocate zero CPU/GPU bytes per call.")
     (folder / "summary.md").write_text("\n".join(lines) + "\n")
     print(f"Validated {len(rows)} cases: {folder / 'summary.md'}")
 
