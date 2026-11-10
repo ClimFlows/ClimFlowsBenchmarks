@@ -3,8 +3,7 @@ using CairoMakie, TOML
 const ROOT = normpath(joinpath(@__DIR__, ".."))
 const DEGREES = (21, 42, 63, 127, 255)
 const SERIES = (
-    ("SHTns local", "inplace-minute", "shtns", "#14804a", :dash, ("Float64",)),
-    ("SHTns JLL", "cuda-float32", "shtns", "#2563eb", :solid, ("Float32", "Float64")),
+    ("SHTns jll", "cuda-float32", "shtns", "#2563eb", :solid, ("Float32", "Float64")),
     ("SHTnsKit", "inplace-minute", "shtnskit", "#b45309", :solid, ("Float32", "Float64")),
     ("SpeedyTransforms", "inplace-minute", "speedy", "#9333ea", :solid, ("Float32", "Float64")),
     ("torch-harmonics", "torch-minute", "torch-harmonics", "#dc2626", :solid, ("Float32", "Float64")),

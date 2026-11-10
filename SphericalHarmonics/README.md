@@ -131,7 +131,7 @@ Reports validate recorded metadata, numerical errors, timings and allocations.
 Raw TOML results include samples, wall times, versions, source revisions and
 library hashes. Recorded paths are provenance, not reproduction inputs.
 
-- [Three-library results](results/inplace-minute/summary.md)
+- [SHTnsKit and SpeedyTransforms results](results/inplace-minute/summary.md)
 - [SHTns_jll results](results/jll-cuda12.9/summary.md)
 - [PyTorch results](results/torch-minute/summary.md)
 - [S2FFT/JAX results](results/jax-minute/summary.md)
@@ -150,8 +150,8 @@ For the optional local build, set `CUDA_PATH` (CUDA 13.1) and `CUDA_ARCH`, run
 
 ![Round-trip CUDA medians for 64 vector fields, shown separately for Float32 and Float64 on logarithmic time axes. JAX reports synchronized wall time including dispatch.](results/roundtrip-jax.svg)
 
-SHTns JLL with the Float32 wrapper is fastest in Float32 among the recorded
-runs; the local SHTns build remains fastest in Float64. At T255, round trips take **16.53 ms** (SHTns JLL Float32),
+SHTns jll with the Float32 wrapper is fastest in both precisions among the
+backends shown. At T255, round trips take **16.53 ms** (SHTns JLL Float32),
 **48.48 ms** (SpeedyTransforms Float32), **58.69 ms** (SHTns JLL Float64), and
 **337.75 ms** (torch-harmonics Float64). All supported measured cases pass validation;
 captured PyTorch graphs contain no host↔device memcpy nodes. Synthesis and
@@ -223,6 +223,5 @@ bash scripts/verify_shtns_float32.sh diagnostic --full-spectrum
 
 The second command checks deterministic repetition and compares T255 synthesis
 against a CPU Float64 reference with random coefficients spanning the complete
-spectrum, followed by a spectral round trip. The original pinned environments
-and historical results are preserved; the reporter detects recorded precision
+spectrum, followed by a spectral round trip. The original pinned environments remain available; the reporter detects recorded precision
 capabilities rather than assuming SHTns always lacks Float32.

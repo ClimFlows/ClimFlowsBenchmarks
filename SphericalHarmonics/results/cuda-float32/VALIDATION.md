@@ -19,7 +19,8 @@ capability 12.0. Julia 1.11.9, CUDA runtime 12.9, SHTns_jll 3.7.0+0.
 - Maximum Float32 graph/direct relative L2 error: 5.50e-7, below 1e-5.
 - CUDA package tests: 44 existing assertions + 936 Float32/Float64 assertions
   + 2 GPU-constructor assertions = 982 passed.
-- The reporter also validates historical JLL and in-place results (40 cases).
+- The reporter validated 40 historical JLL and in-place cases before removal
+  of the local SHTns results. The 30 retained historical cases also pass.
 - All source-archive SHA256 checks pass.
 
 ## T255 tuning diagnostic
