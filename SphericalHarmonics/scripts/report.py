@@ -53,6 +53,9 @@ def summarize(folder):
                 result = read(path)
                 check((result["lmax"], result["precision"], result["batch"])
                       == (degree, precision, batch), f"{path}: case mismatch")
+                if backend.name == "s2fft-jax":
+                    check(result["sampling_bandlimit"] == degree + 1,
+                          f"{path}: S2FFT bandlimit must represent degrees 0..lmax")
                 unsupported = ((backend.name == "shtns" and precision == "Float32")
                                or (backend.name == "dinosaur" and precision == "Float64"))
                 expected = "unsupported" if unsupported else (

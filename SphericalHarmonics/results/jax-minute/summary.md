@@ -4,14 +4,14 @@ Synchronized JAX wall median milliseconds per batch; host dispatch included.
 
 | T | Backend | Precision | Batch | Status | Analysis | Synthesis | Round trip |
 |---:|---|---|---:|---|---:|---:|---:|
-| 21 | s2fft-jax | Float32 | 64 | ok | 15.8722 | 14.0953 | 28.6921 |
-| 21 | s2fft-jax | Float64 | 64 | ok | 16.0716 | 13.1081 | 26.2926 |
-| 42 | s2fft-jax | Float32 | 64 | ok | 69.7704 | 75.8133 | 147.0821 |
-| 42 | s2fft-jax | Float64 | 64 | ok | 71.3442 | 74.6251 | 148.9312 |
-| 63 | s2fft-jax | Float32 | 64 | ok | 256.3216 | 275.7037 | 539.1711 |
-| 63 | s2fft-jax | Float64 | 64 | ok | 261.5667 | 277.8972 | 545.1316 |
-| 127 | s2fft-jax | Float32 | 64 | ok | 2486.7713 | 2656.8501 | 5146.7624 |
-| 127 | s2fft-jax | Float64 | 64 | ok | 2514.4149 | 2659.7190 | 5200.6554 |
+| 21 | s2fft-jax | Float32 | 64 | ok | 7.3982 | 6.5473 | 11.6383 |
+| 21 | s2fft-jax | Float64 | 64 | ok | 7.9584 | 6.7401 | 13.5997 |
+| 42 | s2fft-jax | Float32 | 64 | ok | 34.8534 | 35.3192 | 64.9138 |
+| 42 | s2fft-jax | Float64 | 64 | ok | 31.5052 | 35.5337 | 62.8944 |
+| 63 | s2fft-jax | Float32 | 64 | ok | 76.9256 | 78.3035 | 153.8857 |
+| 63 | s2fft-jax | Float64 | 64 | ok | 70.8216 | 78.4684 | 152.6852 |
+| 127 | s2fft-jax | Float32 | 64 | ok | 792.0500 | 819.1495 | 1623.8123 |
+| 127 | s2fft-jax | Float64 | 64 | ok | 769.6631 | 802.2036 | 1614.1350 |
 
-239.740 synchronized wall seconds; 468 executions; 24 measured operations.
-S2FFT uses device-resident JAX arrays; timed calls contain no host↔device transfers. Reported JAX times are synchronized wall times and include host dispatch.
+76.051 synchronized wall seconds; 482 executions; 24 measured operations.
+JAX backends use device-resident arrays; timed calls contain no host↔device transfers. Reported JAX times are synchronized wall times and include host dispatch.

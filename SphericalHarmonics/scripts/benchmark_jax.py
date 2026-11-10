@@ -181,7 +181,10 @@ def write_toml(path: Path, data: dict):
 
 
 def run_case(case, batch, precision, config, options, output_dir):
-    lmax, bandlimit = case["lmax"], case["nlat"]
+    lmax = case["lmax"]
+    # S2FFT's bandlimit L represents degrees 0 through L-1. Match the
+    # requested inclusive truncation while retaining S2FFT's native GL grid.
+    bandlimit = lmax + 1
     dtype = np.float32 if precision == "Float32" else np.float64
     coeff_path = ROOT / "build" / "jax-fixtures" / f"coefficients-T{lmax}-B{batch}.bin"
     coeff_path.parent.mkdir(parents=True, exist_ok=True)
@@ -220,7 +223,7 @@ def run_case(case, batch, precision, config, options, output_dir):
         "errors": errors,
         "tolerance": tolerance,
         "mode": "jax-jit-device-resident",
-        "notes": "S2FFT GL sampling uses nlat=bandlimit and nlon=2*bandlimit-1; this is one fewer longitude than the existing 2*nlat grid.",
+        "notes": "S2FFT bandlimit is lmax+1 (degrees 0..lmax); native GL grid has nlat=bandlimit and nlon=2*bandlimit-1.",
         "analytic_modes": [list(mode) for mode in modes_for(lmax)],
     }
     if not options.validate_only:

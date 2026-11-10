@@ -3,13 +3,13 @@ backend = "s2fft-jax"
 lmax = 63
 precision = "Float64"
 batch = 64
-nlat = 96
-nlon = 191
-nlat_storage = 96
-sampling_bandlimit = 96
+nlat = 64
+nlon = 127
+nlat_storage = 64
+sampling_bandlimit = 64
 tolerance = 5e-10
 mode = "jax-jit-device-resident"
-notes = "S2FFT GL sampling uses nlat=bandlimit and nlon=2*bandlimit-1; this is one fewer longitude than the existing 2*nlat grid."
+notes = "S2FFT bandlimit is lmax+1 (degrees 0..lmax); native GL grid has nlat=bandlimit and nlon=2*bandlimit-1."
 analytic_modes = [
     [
         1,
@@ -36,45 +36,45 @@ analytic_modes = [
         63,
     ],
 ]
-post_measurement_velocity_error = 1.539712364196458e-13
+post_measurement_velocity_error = 7.613259719058369e-14
 
 [errors]
-divergence_spectral_relative_l2 = 2.6533325751190654e-12
-vorticity_spectral_relative_l2 = 2.6506243532430153e-12
-velocity_theta_relative_l2 = 2.2417854150712247e-14
-velocity_phi_relative_l2 = 2.2931833289368674e-14
+divergence_spectral_relative_l2 = 5.019986341827717e-13
+vorticity_spectral_relative_l2 = 5.030294324770085e-13
+velocity_theta_relative_l2 = 1.5760463827346304e-14
+velocity_phi_relative_l2 = 1.606405074372143e-14
 
 [analysis]
 seconds = [
-    0.25757513800635934,
-    0.2468776989262551,
-    0.27272800798527896,
-    0.29735996504314244,
-    0.2584475199691951,
-    0.2535515329800546,
-    0.29025983694009483,
-    0.27887126605492085,
-    0.2583018819568679,
-    0.26468592695891857,
+    0.07013600191567093,
+    0.07077940902672708,
+    0.07064349600113928,
+    0.07080801704432815,
+    0.07020853203721344,
+    0.07083523203618824,
+    0.08348591497633606,
+    0.09307665808591992,
+    0.09237539093010128,
+    0.08331458503380418,
 ]
 wall_seconds = [
-    0.25757513800635934,
-    0.2468776989262551,
-    0.27272800798527896,
-    0.29735996504314244,
-    0.2584475199691951,
-    0.2535515329800546,
-    0.29025983694009483,
-    0.27887126605492085,
-    0.2583018819568679,
-    0.26468592695891857,
+    0.07013600191567093,
+    0.07077940902672708,
+    0.07064349600113928,
+    0.07080801704432815,
+    0.07020853203721344,
+    0.07083523203618824,
+    0.08348591497633606,
+    0.09307665808591992,
+    0.09237539093010128,
+    0.08331458503380418,
 ]
-minimum_seconds = 0.2468776989262551
-median_seconds = 0.26156672346405685
-p95_seconds = 0.294164907396771
-wall_median_seconds = 0.26156672346405685
-measured_wall_seconds = 2.6786587748210877
-target_wall_seconds = 0.8333333333333334
+minimum_seconds = 0.07013600191567093
+median_seconds = 0.0708216245402582
+p95_seconds = 0.09276108786580153
+wall_median_seconds = 0.0708216245402582
+measured_wall_seconds = 0.7756632370874286
+target_wall_seconds = 0.4166666666666667
 samples = 10
 repeats_per_sample = 1
 executions = 10
@@ -84,39 +84,39 @@ inputs_resident_on_device = true
 outputs_resident_on_device = true
 execution_path = "JAX jit with device-resident inputs; synchronized wall time includes dispatch"
 timing_scope = "synchronized wall time; includes JAX host dispatch, excludes transfers"
-vector_fields_per_second = 244.6794422180945
+vector_fields_per_second = 903.6787904183068
 
 [synthesis]
 seconds = [
-    0.28867265302687883,
-    0.2739439109573141,
-    0.2721815840341151,
-    0.2877052119001746,
-    0.28187980700749904,
-    0.2735378249781206,
-    0.2790177279384807,
-    0.2851542530115694,
-    0.2767766360193491,
-    0.2739517779555172,
+    0.07258226606063545,
+    0.07275932398624718,
+    0.0723534170538187,
+    0.0735289539443329,
+    0.07937028002925217,
+    0.08539302099961787,
+    0.09206127293873578,
+    0.08883225405588746,
+    0.08154800301417708,
+    0.07756644301116467,
 ]
 wall_seconds = [
-    0.28867265302687883,
-    0.2739439109573141,
-    0.2721815840341151,
-    0.2877052119001746,
-    0.28187980700749904,
-    0.2735378249781206,
-    0.2790177279384807,
-    0.2851542530115694,
-    0.2767766360193491,
-    0.2739517779555172,
+    0.07258226606063545,
+    0.07275932398624718,
+    0.0723534170538187,
+    0.0735289539443329,
+    0.07937028002925217,
+    0.08539302099961787,
+    0.09206127293873578,
+    0.08883225405588746,
+    0.08154800301417708,
+    0.07756644301116467,
 ]
-minimum_seconds = 0.2721815840341151
-median_seconds = 0.2778971819789149
-p95_seconds = 0.28823730451986196
-wall_median_seconds = 0.2778971819789149
-measured_wall_seconds = 2.7928213868290186
-target_wall_seconds = 0.8333333333333334
+minimum_seconds = 0.0723534170538187
+median_seconds = 0.07846836152020842
+p95_seconds = 0.09060821444145403
+wall_median_seconds = 0.07846836152020842
+measured_wall_seconds = 0.7959952350938693
+target_wall_seconds = 0.4166666666666667
 samples = 10
 repeats_per_sample = 1
 executions = 10
@@ -126,39 +126,39 @@ inputs_resident_on_device = true
 outputs_resident_on_device = true
 execution_path = "JAX jit with device-resident inputs; synchronized wall time includes dispatch"
 timing_scope = "synchronized wall time; includes JAX host dispatch, excludes transfers"
-vector_fields_per_second = 230.30100393337534
+vector_fields_per_second = 815.6153481491735
 
 [roundtrip]
 seconds = [
-    0.5450903789605945,
-    0.545315103023313,
-    0.5426301680272445,
-    0.5457604950061068,
-    0.5419125300832093,
-    0.5469251259928569,
-    0.5432273659389466,
-    0.5451728790067136,
-    0.5433642239077017,
-    0.5461585819721222,
+    0.1681797649944201,
+    0.16010679700411856,
+    0.15062682796269655,
+    0.14634229894727468,
+    0.145961127942428,
+    0.14984474203083664,
+    0.1603284290758893,
+    0.16181269602384418,
+    0.15474363905377686,
+    0.1488709090044722,
 ]
 wall_seconds = [
-    0.5450903789605945,
-    0.545315103023313,
-    0.5426301680272445,
-    0.5457604950061068,
-    0.5419125300832093,
-    0.5469251259928569,
-    0.5432273659389466,
-    0.5451728790067136,
-    0.5433642239077017,
-    0.5461585819721222,
+    0.1681797649944201,
+    0.16010679700411856,
+    0.15062682796269655,
+    0.14634229894727468,
+    0.145961127942428,
+    0.14984474203083664,
+    0.1603284290758893,
+    0.16181269602384418,
+    0.15474363905377686,
+    0.1488709090044722,
 ]
-minimum_seconds = 0.5419125300832093
-median_seconds = 0.5451316289836541
-p95_seconds = 0.5465801811835262
-wall_median_seconds = 0.5451316289836541
-measured_wall_seconds = 5.445556851918809
-target_wall_seconds = 0.8333333333333334
+minimum_seconds = 0.145961127942428
+median_seconds = 0.1526852335082367
+p95_seconds = 0.16531458395766094
+wall_median_seconds = 0.1526852335082367
+measured_wall_seconds = 1.546817232039757
+target_wall_seconds = 0.4166666666666667
 samples = 10
 repeats_per_sample = 1
 executions = 10
@@ -168,4 +168,4 @@ inputs_resident_on_device = true
 outputs_resident_on_device = true
 execution_path = "JAX jit with device-resident inputs; synchronized wall time includes dispatch"
 timing_scope = "synchronized wall time; includes JAX host dispatch, excludes transfers"
-vector_fields_per_second = 117.40283740153161
+vector_fields_per_second = 419.16299650907285
