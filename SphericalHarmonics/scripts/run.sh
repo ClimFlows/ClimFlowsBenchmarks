@@ -7,7 +7,7 @@ if [[ $# -gt 0 ]]; then shift; fi
 run_one() {
     local name=$1
     shift
-    if [[ "$name" == shtns-jll ]]; then
+    if [[ "$name" == shtns-jll || "$name" == shtns-float32 ]]; then
         env -u SHTNS_PATH SHTNS_BINARY=jll "$julia_bin" --startup-file=no --project="$root/environments/$name" "$root/scripts/benchmark.jl" --backend=shtns "$@"
         return
     fi

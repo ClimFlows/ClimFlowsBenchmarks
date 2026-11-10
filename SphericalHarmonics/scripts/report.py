@@ -56,7 +56,7 @@ def summarize(folder):
                 if backend.name == "s2fft-jax":
                     check(result["sampling_bandlimit"] == degree + 1,
                           f"{path}: S2FFT bandlimit must represent degrees 0..lmax")
-                unsupported = ((backend.name == "shtns" and precision == "Float32")
+                unsupported = ((backend.name == "shtns" and precision not in meta.get("shtns_cuda_precisions", ["Float64"]))
                                or (backend.name == "dinosaur" and precision == "Float64"))
                 expected = "unsupported" if unsupported else (
                     "validated" if "validate-only" in args else "ok")

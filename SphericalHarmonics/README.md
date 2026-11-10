@@ -178,3 +178,48 @@ Regenerate the figure with Julia:
 "$JULIA" --project=plotting -e 'using Pkg; Pkg.instantiate()'
 "$JULIA" --project=plotting scripts/plot_results.jl
 ```
+
+
+## SHTns.jl CUDA Float32 development run
+
+The `shtns-float32` environment uses a source snapshot of the local SHTns.jl
+branch `codex/cuda-float32` (`d9981b8`), based on upstream `db5168a`.
+It uses the same SHTns_jll 3.7.0+0 binary and CUDA 12.9 preferences as
+`shtns-jll`. The snapshot, commit and checksum are recorded in `sources/`;
+no GitHub fork or external unpublished branch is needed to reproduce it.
+
+```sh
+bash scripts/setup.sh shtns-float32
+bash scripts/run.sh shtns-float32 --seconds-total=60 --out=results/cuda-float32
+python3 scripts/report.py results/cuda-float32
+```
+
+The companion `scripts/verify_shtns_float32.sh` has four stages: `prototype`,
+`package`, `tests`, and `diagnostic`. Set `JULIA` and `JULIA_DEPOT_PATH` as
+needed; its defaults use the Julia 1.11.9 juliaup installation and the cached
+benchmark depot on the development machine. The prototype directly calls the
+Float32 C entry points and works with the original pinned SHTns.jl package.
+The package stage uses only public SHTns.jl transforms from the patched source.
+The test stage runs the original CUDA tests plus Float32/Float64 coverage.
+
+At T255, batch 64, Float32 uses an explicit SHTns GPU tuning profile
+`[nwarp_s,nf_s,nw_s,nwarp_a,nf_a,lspan_a]=[4,4,2,6,4,12]`. Its single
+192-thread latitude block removes inter-block atomic accumulation, whose
+run-to-run roundoff otherwise exceeds the strict graph/direct check of 1e-5.
+Other cases retain SHTns' default GPU configuration. The profile is recorded in
+the result notes; all numerical and allocation checks retain their thresholds.
+This is a benchmark configuration, not a wrapper API change or an automatic
+tuning recommendation for other devices or workloads.
+
+To reproduce the variability diagnostic using the original C defaults:
+
+```sh
+bash scripts/verify_shtns_float32.sh diagnostic --default
+bash scripts/verify_shtns_float32.sh diagnostic --full-spectrum
+```
+
+The second command checks deterministic repetition and compares T255 synthesis
+against a CPU Float64 reference with random coefficients spanning the complete
+spectrum, followed by a spectral round trip. The original pinned environments
+and historical results are preserved; the reporter detects recorded precision
+capabilities rather than assuming SHTns always lacks Float32.

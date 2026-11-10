@@ -27,3 +27,12 @@ url = "https://github.com/climate-federation/legoESM"
 revision = "a8ab4a655799c178a612b611687e981bc1d74de4"
 archive = "legoesm-core.tar.gz"
 sha256 = "6607f751b99ec59ae42753157de369e04cb8a5c2685b7e24fc2d18cb0a6f88fe"
+
+[shtns-julia-float32]
+url = "https://github.com/fgerick/SHTns.jl"
+base_revision = "db5168a4b7692583c231637f038e2956c14661db"
+revision = "d9981b895650895f7cc0fdb9202e418cb9ea0c71"
+branch = "codex/cuda-float32"
+archive = "shtns-julia-float32.tar.gz"
+sha256 = "3381be537e80d8cd8c7e2eeb1147031ab605ed1ae861696d7637685f152588f6"
+local_patch = true

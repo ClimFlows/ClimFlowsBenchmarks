@@ -164,10 +164,13 @@ function main()
     open(joinpath(out,"packages.txt"),"w") do io; Pkg.status(;io, mode=Pkg.PKGMODE_MANIFEST); end
     CUDA.functional() || error("CUDA is not functional; see cuda-versioninfo.txt")
     CUDA.allowscalar(false)
-    adapter=joinpath(ROOT,"adapters",backend*".jl")
+    adapter=backend == "shtns" ? get(ENV,"SHTNS_BENCH_ADAPTER",joinpath(ROOT,"adapters",backend*".jl")) : joinpath(ROOT,"adapters",backend*".jl")
     cp(adapter,joinpath(out,backend*".jl");force=true)
     include(adapter)
     if backend=="shtns"
+        metadata["shtns_cuda_precisions"] = isdefined(@__MODULE__, :SHTNS_CUDA_PRECISIONS) ? SHTNS_CUDA_PRECISIONS : ["Float32", "Float64"]
+        metadata["shtns_package_path"] = pathof(SHTns)
+        cp(joinpath(ROOT,"adapters","shtns_gpu_init.jl"),joinpath(out,"shtns_gpu_init.jl");force=true)
         metadata["shtns_binary_origin"] = get(ENV,"SHTNS_BINARY","local")
         metadata["shtns_library"] = SHTns.libshtns
         metadata["shtns_library_sha256"] = bytes2hex(sha256(read(SHTns.libshtns)))
@@ -185,16 +188,16 @@ function main()
     all(p->p in ("Float32","Float64"),precisions) || error("precision must be Float32 or Float64")
     sort!(cases;by=c->c["lmax"],rev=true)
     sort!(precisions;rev=true)
-    supported=length(cases)*count(p->!(backend=="shtns" && p=="Float32"),precisions)
+    supported=length(cases)*count(p->backend != "shtns" || p in SHTNS_CUDA_PRECISIONS, precisions)
     OPS_LEFT[]=3supported
-    full_combinations=length(config["cases"])*(3length(config["precisions"])-count(==("Float32"),config["precisions"]))
+    full_combinations=length(config["cases"])*(3length(config["precisions"]))
     default_budget=get(config,"gpu_seconds_total",60.0)*OPS_LEFT[]/(3full_combinations)
     GPU_BUDGET[]=parse(Float64,get(opts,"seconds-total",string(default_budget)))
     failed=false
     for case in cases, precision in precisions
         L=case["lmax"]; filename=joinpath(out,"T$L-$precision.toml")
-        if backend=="shtns" && precision=="Float32"
-            write_toml(filename,Dict("status"=>"unsupported", "reason"=>"Pinned SHTns.jl CUDA API uses Float64", "backend"=>backend,"lmax"=>L,"precision"=>precision,"batch"=>B))
+        if backend == "shtns" && !(precision in SHTNS_CUDA_PRECISIONS)
+            write_toml(filename,Dict("status"=>"unsupported", "reason"=>"Loaded SHTns.jl CUDA API does not support $precision", "backend"=>backend,"lmax"=>L,"precision"=>precision,"batch"=>B))
             continue
         end
         println("$backend T$L $precision batch=$B"); flush(stdout)

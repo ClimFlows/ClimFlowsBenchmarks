@@ -10,3 +10,6 @@ results/*/
 !results/jax-minute/
 !results/dinosaur-minute/
 !results/legoesm-minute/
+
+!results/cuda-float32/
+!results/cuda-float32-prototype/
