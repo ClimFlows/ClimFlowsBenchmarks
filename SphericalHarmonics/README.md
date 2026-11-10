@@ -29,6 +29,53 @@ JULIA=/path/to/julia-1.11.9/bin/julia bash scripts/run_torch.sh \
 python3 scripts/report.py results/torch-minute
 ```
 
+For S2FFT with JAX/CUDA:
+
+```sh
+JULIA=/path/to/julia-1.11.9/bin/julia bash scripts/run_jax.sh \
+  --out=results/jax-minute --lmax=21,42,63,127 --seconds-total=10
+python3 scripts/report.py results/jax-minute
+```
+
+The JAX environment is pinned by `environments/jax/uv.lock`. It uses S2FFT's
+spin spherical transforms on its native Gauss-Legendre grid. JAX calls are
+compiled and use GPU-resident arrays; synchronized wall timings include host
+dispatch but exclude transfers. Its GL grid has `nlat` latitudes and
+`2*nlat-1` longitudes, one fewer longitude than the other backends.
+The current S2FFT recursion path is measured through T127; T255 exceeds GPU
+memory during compilation on the reference GPU. Timings use a 10-second budget
+per invocation; the minimum-sample requirement can extend this for slow cases.
+
+For Dinosaur's GCM vector conversions:
+
+```sh
+JULIA=/path/to/julia-1.11.9/bin/julia bash scripts/run_dinosaur.sh \
+  --out=results/dinosaur-minute --seconds-total=60
+python3 scripts/report.py results/dinosaur-minute
+```
+
+For legoESM's Gaussian-grid vector conversions (Float32 and Float64):
+
+```sh
+bash scripts/run_legoesm.sh --out=results/legoesm-minute --seconds-total=60
+python3 scripts/report.py results/legoesm-minute
+```
+
+The runner unpacks the pinned `legoesm-core` source snapshot in `sources/` and
+uses the locked JAX/CUDA environment. It chooses a memory-safe chunk size by
+truncation and uses quadratic dealiasing. Float32 vector analysis
+promotes coefficients to Complex128; the benchmark casts them back to
+Complex64 and includes that cast in timing. On CPU-only systems, numerical
+validation works with `--validate-only --allow-cpu-validation` and records no
+timings.
+
+The pinned `environments/dinosaur/uv.lock` environment uses Dinosaur's fast
+real spherical harmonics with FFT longitude transforms and its native
+wind↔vorticity/divergence operators. The benchmark grid is `(longitude,
+latitude)`. Its analytic fixture omits the top total wavenumber, which the GCM
+clips during vector tendency calculations. Float64 is recorded unsupported:
+the Float32 modal path does not meet the Float64 accuracy threshold.
+
 The PyTorch environment is pinned by `environments/torch/uv.lock` and uses
 PyTorch 2.9.1 with NVIDIA's `torch-harmonics-cu130` 0.9.3 wheel. Fixture
 coefficients are exported from Julia to keep the analytic fields identical.
@@ -85,6 +132,9 @@ library hashes. Recorded paths are provenance, not reproduction inputs.
 - [Three-library results](results/inplace-minute/summary.md)
 - [SHTns_jll results](results/jll-cuda12.9/summary.md)
 - [PyTorch results](results/torch-minute/summary.md)
+- [S2FFT/JAX results](results/jax-minute/summary.md)
+- [Dinosaur results](results/dinosaur-minute/summary.md)
+- [legoESM results](results/legoesm-minute/summary.md)
 
 Reference GPU: RTX PRO 1000 Blackwell Laptop, 8151 MiB, compute capability 12.0.
 Use AC power and an otherwise idle GPU. Compare timings at the same precision;
@@ -96,15 +146,29 @@ For the optional local build, set `CUDA_PATH` (CUDA 13.1) and `CUDA_ARCH`, run
 
 ## Results
 
-![Round-trip GPU medians for 64 vector fields, shown separately for Float32 and Float64 on logarithmic time axes.](results/roundtrip-torch.svg)
+![Round-trip CUDA medians for 64 vector fields, shown separately for Float32 and Float64 on logarithmic time axes. JAX reports synchronized wall time including dispatch.](results/roundtrip-jax.svg)
 
 torch-harmonics is fastest in Float32 through T63; SpeedyTransforms is faster
 at T127 and T255. SHTns is fastest in Float64. At T255, round trips take
 **48.48 ms** (SpeedyTransforms Float32), **60.70 ms** (SHTns JLL Float64), and
-**337.75 ms** (torch-harmonics Float64). All measured cases pass validation;
+**337.75 ms** (torch-harmonics Float64). All supported measured cases pass validation;
 captured PyTorch graphs contain no host↔device memcpy nodes. Synthesis and
 round-trip graphs include a device-to-device copy, which is included in their
 reported device time.
+S2FFT/JAX is slower on the measured range: round trips take **28.69 ms** at
+T21 Float32 and **5.15 s** at T127 Float32; its synchronized wall times include
+JAX dispatch, and it has no T255 result.
+Dinosaur is far faster than S2FFT on the shared range, but its vector round
+trips are slower than torch-harmonics and SpeedyTransforms: **0.36 ms** at T21
+and **201.11 ms** at T255, Float32. JAX timings are synchronized wall times
+including dispatch; other backends use CUDA-event device times, so the combined
+plot is indicative rather than a strict timing-method comparison. Dinosaur has
+no validated Float64 result.
+legoESM passes all measured truncations in both precisions. Its round trips take
+**0.50 ms** (Float32) and **1.39 ms** (Float64) at T21, rising to **562 ms** and
+**1.12 s** at T255. With the same JAX wall-time method, Dinosaur is faster in
+Float32 by about 1.4× at T21 and 2.8× at T255. SpeedyTransforms remains faster
+in the recorded results, though those Julia timings measure CUDA device time.
 
 Regenerate the figure with Julia:
 

@@ -21,3 +21,9 @@ url = "https://bitbucket.org/nschaeff/shtns"
 revision = "4e69ceb3fc5f19475d55b03ff0fdec210dc3075e"
 archive = "shtns-c.tar.gz"
 sha256 = "0f16e8a785d80d7bcd3756b9fb21a8376ba271a2a7b26becbe2918bb23ea5f58"
+
+[legoesm-core]
+url = "https://github.com/climate-federation/legoESM"
+revision = "a8ab4a655799c178a612b611687e981bc1d74de4"
+archive = "legoesm-core.tar.gz"
+sha256 = "6607f751b99ec59ae42753157de369e04cb8a5c2685b7e24fc2d18cb0a6f88fe"

@@ -1,0 +1,10 @@
+[project]
+name = "climflows-jax-sht-benchmark"
+version = "0.1.0"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "jax[cuda13]==0.12.0.1",
+    "numpy==2.3.4",
+    "s2fft==1.5.0",
+    "tomli-w==1.2.0",
+]

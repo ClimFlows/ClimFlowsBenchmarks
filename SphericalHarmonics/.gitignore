@@ -7,3 +7,5 @@ results/*/
 !results/inplace-minute/
 !results/jll-cuda12.9/
 !results/torch-minute/
+!results/jax-minute/
+!results/dinosaur-minute/

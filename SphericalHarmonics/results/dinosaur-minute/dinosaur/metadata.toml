@@ -1,0 +1,18 @@
+backend = "dinosaur"
+utc_started = "2026-11-10T12:57:15Z"
+gpu = "NVIDIA RTX PRO 1000 Blackwell Generation Laptop GPU"
+compute_capability = "12.0"
+python_version = "3.13.13"
+jax_version = "0.12.0.1"
+dinosaur_version = "1.5.1"
+uv_lock_sha256 = "fba43bf06bc5038efd25d8458cbeb03e4e598f6e9b4557c2f16afd5416315797"
+arguments = [
+    "--out=SphericalHarmonics/results/dinosaur-minute",
+    "--lmax=21,42,63,127,255",
+    "--precision=Float32,Float64",
+    "--batch=64",
+    "--warmup=3",
+    "--seconds-total=60.0",
+    "--min-samples=10",
+]
+measurement = "Warmed jitted GCM vector conversions with device-resident arrays; synchronized wall timing; no host-device transfers in timed region."
