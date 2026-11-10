@@ -9,3 +9,4 @@ results/*/
 !results/torch-minute/
 !results/jax-minute/
 !results/dinosaur-minute/
+!results/legoesm-minute/

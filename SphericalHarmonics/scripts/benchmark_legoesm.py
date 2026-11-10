@@ -258,9 +258,13 @@ def main():
         "measurement": "Jitted Gaussian-grid GCM vector conversions, device-resident inputs, synchronized wall time; no timed host-device transfers.",
     }
     write_toml(output_dir / "metadata.toml", metadata)
-    (output_dir / "nvidia-smi.txt").write_text(
-        subprocess.run(["nvidia-smi"], check=False, capture_output=True, text=True).stdout
-    )
+    try:
+        nvidia_smi = subprocess.run(
+            ["nvidia-smi"], check=False, capture_output=True, text=True
+        ).stdout
+    except FileNotFoundError:
+        nvidia_smi = "nvidia-smi is unavailable on this system.\n"
+    (output_dir / "nvidia-smi.txt").write_text(nvidia_smi)
     write_toml(output_dir / "config.toml", config)
     selected = [c for c in config["cases"] if c["lmax"] in options.lmax_values]
     for case in sorted(selected, key=lambda c: c["lmax"], reverse=True):

@@ -1,0 +1,20 @@
+backend = "legoesm"
+utc_started = "2026-11-10T13:37:35Z"
+device = "cuda:0"
+python_version = "3.13.13"
+jax_version = "0.12.0.1"
+legoesm_core_revision = "a8ab4a655799c178a612b611687e981bc1d74de4"
+legoesm_core_sha256 = "6607f751b99ec59ae42753157de369e04cb8a5c2685b7e24fc2d18cb0a6f88fe"
+legoesm_chunking_policy = "auto: 0 through T63, 32 at T127, 8 above T127"
+uv_lock_sha256 = "db9c406263f62c02c9dfa753f9eccda7faee712eee606d8a8150c5710dec8027"
+arguments = [
+    "--out=results/legoesm-minute",
+    "--lmax=21,42,63,127,255",
+    "--precision=Float32,Float64",
+    "--batch=64",
+    "--warmup=3",
+    "--seconds-total=60.0",
+    "--min-samples=10",
+]
+legoesm_sh_chunk_size = 0
+measurement = "Jitted Gaussian-grid GCM vector conversions, device-resident inputs, synchronized wall time; no timed host-device transfers."
