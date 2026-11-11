@@ -131,7 +131,7 @@ Reports validate recorded metadata, numerical errors, timings and allocations.
 Raw TOML results include samples, wall times, versions, source revisions and
 library hashes. Recorded paths are provenance, not reproduction inputs.
 
-- [Three-library results](results/inplace-minute/summary.md)
+- [SHTnsKit and SpeedyTransforms results](results/inplace-minute/summary.md)
 - [SHTns_jll results](results/jll-cuda12.9/summary.md)
 - [PyTorch results](results/torch-minute/summary.md)
 - [S2FFT/JAX results](results/jax-minute/summary.md)
@@ -139,24 +139,22 @@ library hashes. Recorded paths are provenance, not reproduction inputs.
 - [legoESM results](results/legoesm-minute/summary.md)
 
 Reference GPU: RTX PRO 1000 Blackwell Laptop, 8151 MiB, compute capability 12.0.
-Use AC power and an otherwise idle GPU. Compare timings at the same precision;
-local SHTns 3.7.5/CUDA 13.1 and JLL SHTns 3.7.0/CUDA 12.9 differ in both versions.
-
-For the optional local build, set `CUDA_PATH` (CUDA 13.1) and `CUDA_ARCH`, run
-`setup.sh shtns` then `build_shtns.sh`, and select `run.sh shtns`. Set
-`CUDA_MATH_LIBS` if math libraries are outside the toolkit's `lib64` directory.
+Use AC power and an otherwise idle GPU. Compare timings at the same precision.
 
 ## Results
 
 ![Round-trip CUDA medians for 64 vector fields, shown separately for Float32 and Float64 on logarithmic time axes. JAX reports synchronized wall time including dispatch.](results/roundtrip-jax.svg)
 
-torch-harmonics is fastest in Float32 through T63; SpeedyTransforms is faster
-at T127 and T255. SHTns is fastest in Float64. At T255, round trips take
-**48.48 ms** (SpeedyTransforms Float32), **60.70 ms** (SHTns JLL Float64), and
+SHTns jll with the Float32 wrapper is fastest in both precisions among the
+backends shown. At T255, round trips take **16.53 ms** (SHTns JLL Float32),
+**48.48 ms** (SpeedyTransforms Float32), **58.69 ms** (SHTns JLL Float64), and
 **337.75 ms** (torch-harmonics Float64). All supported measured cases pass validation;
 captured PyTorch graphs contain no host↔device memcpy nodes. Synthesis and
 round-trip graphs include a device-to-device copy, which is included in their
-reported device time.
+reported device time. The SHTns JLL curves use the public API run in
+[CUDA Float32 results](results/cuda-float32/summary.md); T255 Float32 uses the
+explicit single-block reduction profile described in
+[validation notes](results/cuda-float32/VALIDATION.md).
 S2FFT/JAX is slower on the shared Float32 range: round trips take **11.64 ms**
 at T21 and **1.62 s** at T127. With synchronized wall timing, Dinosaur is
 about 32× and 8× faster at those truncations. S2FFT has no T255 result.
@@ -178,3 +176,47 @@ Regenerate the figure with Julia:
 "$JULIA" --project=plotting -e 'using Pkg; Pkg.instantiate()'
 "$JULIA" --project=plotting scripts/plot_results.jl
 ```
+
+
+## SHTns.jl CUDA Float32 development run
+
+The `shtns-float32` environment uses a source snapshot of the patched SHTns.jl
+branch `codex/cuda-float32` (`d9981b8`), based on upstream `db5168a`.
+It uses the same SHTns_jll 3.7.0+0 binary and CUDA 12.9 preferences as
+`shtns-jll`. The snapshot, commit and checksum are recorded in `sources/`;
+no GitHub fork or external unpublished branch is needed to reproduce it.
+
+```sh
+bash scripts/setup.sh shtns-float32
+bash scripts/run.sh shtns-float32 --seconds-total=60 --out=results/cuda-float32
+python3 scripts/report.py results/cuda-float32
+```
+
+The companion `scripts/verify_shtns_float32.sh` has four stages: `prototype`,
+`package`, `tests`, and `diagnostic`. Set `JULIA` and `JULIA_DEPOT_PATH` as
+needed; its defaults use the Julia 1.11.9 juliaup installation and the cached
+benchmark depot on the development machine. The prototype directly calls the
+Float32 C entry points and works with the original pinned SHTns.jl package.
+The package stage uses only public SHTns.jl transforms from the patched source.
+The test stage runs the original CUDA tests plus Float32/Float64 coverage.
+
+At T255, batch 64, Float32 uses an explicit SHTns GPU tuning profile
+`[nwarp_s,nf_s,nw_s,nwarp_a,nf_a,lspan_a]=[4,4,2,6,4,12]`. Its single
+192-thread latitude block removes inter-block atomic accumulation, whose
+run-to-run roundoff otherwise exceeds the strict graph/direct check of 1e-5.
+Other cases retain SHTns' default GPU configuration. The profile is recorded in
+the result notes; all numerical and allocation checks retain their thresholds.
+This is a benchmark configuration, not a wrapper API change or an automatic
+tuning recommendation for other devices or workloads.
+
+To reproduce the variability diagnostic using the original C defaults:
+
+```sh
+bash scripts/verify_shtns_float32.sh diagnostic --default
+bash scripts/verify_shtns_float32.sh diagnostic --full-spectrum
+```
+
+The second command checks deterministic repetition and compares T255 synthesis
+against a CPU Float64 reference with random coefficients spanning the complete
+spectrum, followed by a spectral round trip. The original pinned environments remain available; the reporter detects recorded precision
+capabilities rather than assuming SHTns always lacks Float32.

@@ -1,0 +1,17 @@
+arguments = ["--backend=shtns", "--seconds-total=60", "--out=/home/dubos/Documents/ChatGPT/ClimFlows/ClimFlowsBenchmarks/SphericalHarmonics/results/cuda-float32-prototype"]
+backend = "shtns"
+compute_capability = "12.0.0"
+cuda_runtime_version = "12.9.0"
+gpu = "NVIDIA RTX PRO 1000 Blackwell Generation Laptop GPU"
+julia_threads = 1
+julia_version = "1.11.9"
+loaded_cuda_libraries = ["/lib/x86_64-linux-gnu/libcuda.so.1", "/home/dubos/.julia/artifacts/b842734cc2028a5166fdcefc7e5a24fb79ab3e79/lib/libcudart.so", "/home/dubos/.julia/artifacts/b842734cc2028a5166fdcefc7e5a24fb79ab3e79/lib/libcufft.so", "/home/dubos/.julia/artifacts/b842734cc2028a5166fdcefc7e5a24fb79ab3e79/lib/libnvJitLink.so.12", "/home/dubos/.julia/artifacts/b842734cc2028a5166fdcefc7e5a24fb79ab3e79/lib/libnvrtc.so", "/home/dubos/.julia/artifacts/b842734cc2028a5166fdcefc7e5a24fb79ab3e79/lib/libnvrtc-builtins.so"]
+manifest_sha256 = "0a3379b703f419eabf18e7f07bb0f6d0350b6abfff4ffefb3ab858700a8ecda3"
+measurement = "Preallocated pipelines, CUDA event timings; direct or CUDA graph replay; host allocations reported separately"
+shtns_binary_origin = "jll"
+shtns_cuda_precisions = ["Float32", "Float64"]
+shtns_library = "/tmp/climflows-sht-bench-depot/artifacts/ffcc41cbe2007581425c4e27fb1c3ee331143ec0/lib/libshtns.so"
+shtns_library_sha256 = "11097a94101be9941966ac91e1cd2193b78799b23bcfd71f5445d51e203349ca"
+shtns_package_path = "/home/dubos/Documents/ChatGPT/ClimFlows/ClimFlowsBenchmarks/SphericalHarmonics/vendor/shtns-julia/src/SHTns.jl"
+total_memory_bytes = 8082685952
+utc_started = "2026-11-10T16:03:45.106"

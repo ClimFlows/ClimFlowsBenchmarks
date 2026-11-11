@@ -56,7 +56,7 @@ def summarize(folder):
                 if backend.name == "s2fft-jax":
                     check(result["sampling_bandlimit"] == degree + 1,
                           f"{path}: S2FFT bandlimit must represent degrees 0..lmax")
-                unsupported = ((backend.name == "shtns" and precision == "Float32")
+                unsupported = ((backend.name == "shtns" and precision not in meta.get("shtns_cuda_precisions", ["Float64"]))
                                or (backend.name == "dinosaur" and precision == "Float64"))
                 expected = "unsupported" if unsupported else (
                     "validated" if "validate-only" in args else "ok")
@@ -107,7 +107,7 @@ def summarize(folder):
                         times = [f'{1000 * result[op]["median_seconds"]:.4f}' for op in OPERATIONS]
                 label = backend.name
                 if label == "shtns":
-                    label += " (JLL)" if meta.get("shtns_binary_origin") == "jll" else " (local)"
+                    label += " (JLL)"
                 rows.append((degree, label, precision, batch, expected, times))
     check(bool(rows), f"No recorded runs found in {folder}")
     jax_timing = bool({"s2fft-jax", "dinosaur", "legoesm"} & backend_names)

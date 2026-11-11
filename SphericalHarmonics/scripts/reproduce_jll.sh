@@ -19,7 +19,7 @@ export JULIA_LOAD_PATH='@:@stdlib'
 export JULIA_NUM_THREADS=1
 export JULIA_NUM_PRECOMPILE_TASKS=2
 export JULIA_PKG_SERVER=${SHT_BENCH_PKG_SERVER:-https://pkg.julialang.org}
-unset SHTNS_PATH SHTNS_BINARY CUDA_PATH CUDA_MATH_LIBS LD_LIBRARY_PATH LD_PRELOAD JULIA_PKG_OFFLINE
+unset SHTNS_PATH LD_LIBRARY_PATH LD_PRELOAD JULIA_PKG_OFFLINE
 export JULIA=$julia_bin
 "$julia_bin" --startup-file=no -e 'VERSION == v"1.11.9" || error("Reference Julia version: 1.11.9")'
 printf '%s\n' "JULIA_DEPOT_PATH=$JULIA_DEPOT_PATH" "JULIA_LOAD_PATH=$JULIA_LOAD_PATH" "JULIA_PKG_SERVER=$JULIA_PKG_SERVER" > "$destination/environment.txt"
