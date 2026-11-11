@@ -139,12 +139,7 @@ library hashes. Recorded paths are provenance, not reproduction inputs.
 - [legoESM results](results/legoesm-minute/summary.md)
 
 Reference GPU: RTX PRO 1000 Blackwell Laptop, 8151 MiB, compute capability 12.0.
-Use AC power and an otherwise idle GPU. Compare timings at the same precision;
-local SHTns 3.7.5/CUDA 13.1 and JLL SHTns 3.7.0/CUDA 12.9 differ in both versions.
-
-For the optional local build, set `CUDA_PATH` (CUDA 13.1) and `CUDA_ARCH`, run
-`setup.sh shtns` then `build_shtns.sh`, and select `run.sh shtns`. Set
-`CUDA_MATH_LIBS` if math libraries are outside the toolkit's `lib64` directory.
+Use AC power and an otherwise idle GPU. Compare timings at the same precision.
 
 ## Results
 
@@ -185,7 +180,7 @@ Regenerate the figure with Julia:
 
 ## SHTns.jl CUDA Float32 development run
 
-The `shtns-float32` environment uses a source snapshot of the local SHTns.jl
+The `shtns-float32` environment uses a source snapshot of the patched SHTns.jl
 branch `codex/cuda-float32` (`d9981b8`), based on upstream `db5168a`.
 It uses the same SHTns_jll 3.7.0+0 binary and CUDA 12.9 preferences as
 `shtns-jll`. The snapshot, commit and checksum are recorded in `sources/`;

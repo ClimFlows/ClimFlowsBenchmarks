@@ -1,3 +1,4 @@
+# Historical JLL benchmark driver; unused local-build bookkeeping removed.
 include("common.jl")
 using CUDA, Pkg
 
@@ -192,15 +193,11 @@ function main()
     cp(adapter,joinpath(out,backend*".jl");force=true)
     include(adapter)
     if backend=="shtns"
-        metadata["shtns_binary_origin"] = get(ENV,"SHTNS_BINARY","local")
+        metadata["shtns_binary_origin"] = "jll"
         metadata["shtns_library"] = SHTns.libshtns
         metadata["shtns_library_sha256"] = bytes2hex(sha256(read(SHTns.libshtns)))
         metadata["loaded_cuda_libraries"] = filter(p->occursin(r"lib(nvrtc|cudart|cuda\.|cufft|nvJitLink)",basename(p)),Libdl.dllist())
         metadata["cuda_runtime_version"] = string(CUDA.runtime_version())
-        for file in ("configure.log","make.log","nvcc-version.txt","cc-version.txt")
-            source=joinpath(dirname(SHTns.libshtns),file)
-            isfile(source) && cp(source,joinpath(out,file);force=true)
-        end
         write_toml(joinpath(out,"metadata.toml"),metadata)
     end
     cases=filter(c->!haskey(opts,"lmax") || c["lmax"] in parse.(Int,split(opts["lmax"],',')), config["cases"])

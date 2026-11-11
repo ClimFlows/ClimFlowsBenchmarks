@@ -8,19 +8,12 @@ run_one() {
     local name=$1
     shift
     if [[ "$name" == shtns-jll || "$name" == shtns-float32 ]]; then
-        env -u SHTNS_PATH SHTNS_BINARY=jll "$julia_bin" --startup-file=no --project="$root/environments/$name" "$root/scripts/benchmark.jl" --backend=shtns "$@"
+        env -u SHTNS_PATH "$julia_bin" --startup-file=no --project="$root/environments/$name" "$root/scripts/benchmark.jl" --backend=shtns "$@"
         return
     fi
-    case "$name" in shtns|shtnskit|speedy) ;; *) echo "Unknown backend: $name" >&2; return 2;; esac
+    case "$name" in shtnskit|speedy) ;; *) echo "Unknown backend: $name" >&2; return 2;; esac
     [[ -f "$root/environments/$name/Manifest.toml" ]] || { echo "Run scripts/setup.sh first" >&2; return 2; }
-    if [[ "$name" == shtns ]]; then
-        : "${CUDA_PATH:?Set CUDA_PATH to the toolkit used to build SHTns}"
-        export SHTNS_PATH=${SHTNS_PATH:-$root/build/shtns-c/libshtns_cuda.so}
-        local cuda_libs="${CUDA_MATH_LIBS:+$CUDA_MATH_LIBS:}$CUDA_PATH/lib64:$CUDA_PATH/extras/CUPTI/lib64:$CUDA_PATH/nvvm/lib64"
-        LD_LIBRARY_PATH="$cuda_libs${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" "$julia_bin" --startup-file=no --project="$root/environments/$name" "$root/scripts/benchmark.jl" --backend="$name" "$@"
-    else
-        "$julia_bin" --startup-file=no --project="$root/environments/$name" "$root/scripts/benchmark.jl" --backend="$name" "$@"
-    fi
+    "$julia_bin" --startup-file=no --project="$root/environments/$name" "$root/scripts/benchmark.jl" --backend="$name" "$@"
 }
 if [[ "$backend" == all ]]; then
     failed=0

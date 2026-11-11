@@ -107,7 +107,7 @@ def summarize(folder):
                         times = [f'{1000 * result[op]["median_seconds"]:.4f}' for op in OPERATIONS]
                 label = backend.name
                 if label == "shtns":
-                    label += " (JLL)" if meta.get("shtns_binary_origin") == "jll" else " (local)"
+                    label += " (JLL)"
                 rows.append((degree, label, precision, batch, expected, times))
     check(bool(rows), f"No recorded runs found in {folder}")
     jax_timing = bool({"s2fft-jax", "dinosaur", "legoesm"} & backend_names)

@@ -1,16 +1,8 @@
+# Historical JLL adapter; unused local-library loading support removed.
 using Libdl
-if get(ENV, "SHTNS_BINARY", "local") == "jll"
-    pop!(ENV, "SHTNS_PATH", nothing)
-    @eval using SHTns
-    SHTns.libshtns == SHTns.SHTns_jll.LibSHTns_path || error("SHTns cache references a custom library; rebuild its cache without SHTNS_PATH")
-else
-# Set before importing SHTns: its library path is evaluated at precompile time.
-const CUSTOM_SHTNS = get(ENV, "SHTNS_PATH", joinpath(ROOT, "build", "shtns-c", "libshtns_cuda.so"))
-isfile(CUSTOM_SHTNS) || error("CUDA SHTns library missing: $CUSTOM_SHTNS. Run scripts/build_shtns.sh first.")
-ENV["SHTNS_PATH"] = abspath(CUSTOM_SHTNS)
+pop!(ENV, "SHTNS_PATH", nothing)
 using SHTns
-abspath(SHTns.libshtns) == abspath(CUSTOM_SHTNS) || error("SHTns cached another library. Rebuild the SHTns compile cache with SHTNS_PATH set; see README.md.")
-end
+SHTns.libshtns == SHTns.SHTns_jll.LibSHTns_path || error("Expected the SHTns_jll library")
 Libdl.dlsym(Libdl.dlopen(SHTns.libshtns), :cu_spat_to_SHsphtor)
 
 const SHTNS_CUDA_PRECISIONS = hasmethod(SHTns.analys!, Tuple{SHTns.SHTnsCfg,

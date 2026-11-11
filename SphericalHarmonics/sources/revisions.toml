@@ -16,12 +16,6 @@ revision = "d4b3d56d836a5f3e4a9a82e6ce201e4b5b629734"
 archive = "speedy.tar.gz"
 sha256 = "5684e6dd2b678001a5a81513d67a53018110c36b6168087da29bab2225abcb8f"
 
-[shtns-c]
-url = "https://bitbucket.org/nschaeff/shtns"
-revision = "4e69ceb3fc5f19475d55b03ff0fdec210dc3075e"
-archive = "shtns-c.tar.gz"
-sha256 = "0f16e8a785d80d7bcd3756b9fb21a8376ba271a2a7b26becbe2918bb23ea5f58"
-
 [legoesm-core]
 url = "https://github.com/climate-federation/legoESM"
 revision = "a8ab4a655799c178a612b611687e981bc1d74de4"
